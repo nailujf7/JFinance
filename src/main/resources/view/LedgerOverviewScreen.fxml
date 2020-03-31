@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane stylesheets="@../css/custom_theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LedgerOverviewScreenController">
+    <children>
+        <VBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <TableView fx:id="tableViewLedger" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="tableColumnID" prefWidth="100.6666818857193" text="ID" />
+                        <TableColumn fx:id="tableColumnLedgerName" prefWidth="243.3333282470703" text="Ledger" />
+                        <TableColumn fx:id="tableColumnDescription" prefWidth="316.00006103515625" text="Description" />
+                    </columns>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+                </TableView>
+                <HBox alignment="TOP_CENTER" spacing="20.0" VBox.vgrow="NEVER">
+                    <children>
+                        <JFXButton fx:id="buttonAddLedger" mnemonicParsing="false" onAction="#addLedger" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #000000; -fx-border-color: #ffffff;" text="Add" textFill="WHITE" HBox.hgrow="ALWAYS">
+                            <graphic>
+                                <FontAwesomeIconView fill="WHITE" glyphName="PLUS_SQUARE" size="2em" text="" />
+                            </graphic>
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </JFXButton>
+                        <JFXButton fx:id="buttonDeleteLedger" mnemonicParsing="false" onAction="#deleteLedgerEntry" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #000000; -fx-border-color: #ffffff;" text="Delete" textFill="WHITE" HBox.hgrow="ALWAYS">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                            <graphic>
+                                <FontAwesomeIconView fill="WHITE" glyphName="MINUS_SQUARE" size="2em" />
+                            </graphic>
+                        </JFXButton>
+                        <JFXButton fx:id="buttonSelect" mnemonicParsing="false" onAction="#showLedgerDetails" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #000000; -fx-border-color: #ffffff;" text="Details" textFill="WHITE" HBox.hgrow="ALWAYS">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                            <graphic>
+                                <FontAwesomeIconView fill="WHITE" glyphName="MAP_PIN" size="2em" />
+                            </graphic>
+                        </JFXButton>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                    </VBox.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
