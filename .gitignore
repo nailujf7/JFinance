@@ -1,4 +1,4 @@
 *.log
 logs/
 out/
-META-INF/
+java/META-INF/
