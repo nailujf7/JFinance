@@ -1,6 +1,7 @@
 package util;
 
 /**
+ * @author Julian Flieter
  * Constants class
  */
 public class Constants {

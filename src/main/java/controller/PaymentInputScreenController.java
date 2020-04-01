@@ -7,7 +7,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import model.Payment;
-import util.Database;
+import database.MySQLDatabase;
 import util.Util;
 
 import java.io.IOException;
@@ -17,6 +17,7 @@ import java.time.ZoneId;
 import java.util.ResourceBundle;
 
 /**
+ * @author Julian Flieter
  * Controller for InputScreen
  */
 public class PaymentInputScreenController implements Initializable {
@@ -26,7 +27,7 @@ public class PaymentInputScreenController implements Initializable {
     public TextField textFieldAmount;
     public DatePicker textFieldDate;
     public TextArea textAreaAddInfo;
-    private Database database = Database.getDatabase();
+    private MySQLDatabase mySQLDatabase = MySQLDatabase.getMySQLDatabase();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -44,11 +45,11 @@ public class PaymentInputScreenController implements Initializable {
     public void saveUpdatePaymentEntry(ActionEvent event) {
         if (textFieldDate.getValue() != null) {
             try {
-                if (database.getPayment() == null) {
-                    database.savePaymentEntry(textfieldFirstname.getText(),
+                if (mySQLDatabase.getPayment() == null) {
+                    mySQLDatabase.savePaymentEntry(textfieldFirstname.getText(),
                             Double.valueOf(textFieldAmount.getText()), Util.convert2Date(textFieldDate.getValue()), textAreaAddInfo.getText());
                 } else {
-                    database.updatePaymentEntry(textfieldFirstname.getText(),
+                    mySQLDatabase.updatePaymentEntry(textfieldFirstname.getText(),
                             Double.valueOf(textFieldAmount.getText()), Util.convert2Date(textFieldDate.getValue()), textAreaAddInfo.getText());
                 }
                 windowClose(event);
@@ -76,7 +77,7 @@ public class PaymentInputScreenController implements Initializable {
      */
     private void showPaymentEntryDetails() {
         PaymentInputScreenController.isEntryDetail = true;
-        Payment payment = database.getSelectedPayment();
+        Payment payment = mySQLDatabase.getSelectedPayment();
         if (payment != null) {
             textfieldFirstname.setText(payment.getName());
             textFieldAmount.setText(String.valueOf(payment.getAmount()));
@@ -92,7 +93,7 @@ public class PaymentInputScreenController implements Initializable {
      */
     public void deletePaymentEntry(ActionEvent event) throws IOException {
         if (Util.confirmationAlert("Do you really want to delete this entry?")) {
-            database.deletePaymentEntry(database.getSelectedPayment());
+            mySQLDatabase.deletePaymentEntry(mySQLDatabase.getSelectedPayment());
             if (PaymentInputScreenController.isEntryDetail) {
                 Util.showLedgerOverviewScreen();
                 windowClose(event);

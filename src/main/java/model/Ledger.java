@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * @author Julian Flieter
  * Ledger entity class that represents a ledger in which the user can save payments
  */
 @Entity

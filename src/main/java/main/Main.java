@@ -14,6 +14,7 @@ import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 
 /**
+ * @author Julian Flieter
  * Main class
  */
 public class Main extends Application {

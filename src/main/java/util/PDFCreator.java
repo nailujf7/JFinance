@@ -6,6 +6,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import database.MySQLDatabase;
 import model.Payment;
 
 import java.awt.*;
@@ -15,11 +16,12 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
+ * @author Julian Flieter
  * PDFCreator class to export ledger and payment data
  */
 public class PDFCreator {
     private static List<Payment> payments;
-    private static Database database = Database.getDatabase();
+    private static MySQLDatabase mySQLDatabase = MySQLDatabase.getMySQLDatabase();
 
     /**
      * Creates PDF file
@@ -37,7 +39,7 @@ public class PDFCreator {
                 Font boldTitle = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.BOLD);
                 document.open();
 
-                Paragraph accountName = new Paragraph(database.getAccount().getFirstname() + " " + database.getAccount().getLastname(), boldFont);
+                Paragraph accountName = new Paragraph(mySQLDatabase.getAccount().getFirstname() + " " + mySQLDatabase.getAccount().getLastname(), boldFont);
                 accountName.setAlignment(Element.ALIGN_RIGHT);
                 document.add(accountName);
 
@@ -103,9 +105,9 @@ public class PDFCreator {
 
                 // Table payment entries
                 if (Util.isAccountPayments()) {
-                    payments = database.getAccountPayments();
+                    payments = mySQLDatabase.getAccountPayments();
                 } else {
-                    payments = database.getPaymentList();
+                    payments = mySQLDatabase.getPaymentList();
                 }
                 for (Payment payment : payments) {
                     PdfPCell cellPaymentID = new PdfPCell(new Phrase((String.valueOf(payment.getPayment_id()))));
@@ -150,9 +152,9 @@ public class PDFCreator {
 
                 Phrase phrase = new Phrase("", boldFont);
                 if (Util.isAccountPayments()) {
-                    phrase.add(database.getSumAmountAll() + " €");
+                    phrase.add(mySQLDatabase.getSumAmountAll() + " €");
                 } else {
-                    phrase.add(database.getSumAmount() + " €");
+                    phrase.add(mySQLDatabase.getSumAmount() + " €");
 
                 }
                 PdfPCell cellTotalBalance = new PdfPCell(phrase);

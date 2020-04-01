@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * @author Julian Flieter
  * Util class to manage Hibernate
  */
 public class HibernateUtil {

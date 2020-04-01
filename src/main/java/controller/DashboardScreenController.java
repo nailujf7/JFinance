@@ -12,7 +12,7 @@ import javafx.scene.layout.BorderPane;
 import model.Ledger;
 import util.ConfigData;
 import util.Constants;
-import util.Database;
+import database.MySQLDatabase;
 import util.Util;
 
 import java.io.IOException;
@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
+ * @author Julian Flieter
  * Controller class for DashboardScreen
  */
 public class DashboardScreenController implements Initializable {
@@ -30,16 +31,16 @@ public class DashboardScreenController implements Initializable {
     public MenuButton menuLedgers;
     public ImageView imageProfile;
     public Label labelUser;
-    private Database database = Database.getDatabase();
+    private MySQLDatabase mySQLDatabase = MySQLDatabase.getMySQLDatabase();
     private List<Ledger> ledgerList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Util.draggable(borderPaneDashboard);
-        labelUser.setText(database.getAccount().getUsername());
+        labelUser.setText(mySQLDatabase.getAccount().getUsername());
         imageProfile.setImage(new Image(ConfigData.loadPrefData("profile", Constants.IMAGE_PROFILE)));
         loadLedgerMenu();
-        database.getLedgerTotalBalance();
+        mySQLDatabase.getLedgerTotalBalance();
         try {
             openChartOverviewScreen();
         } catch (IOException e) {
@@ -56,7 +57,7 @@ public class DashboardScreenController implements Initializable {
         Ledger ledgerItem = new Ledger();
         ledgerItem.setLedgerName("ALL");
         ledgerList.add(ledgerItem);
-        ledgerList.addAll(database.getLedgerList());
+        ledgerList.addAll(mySQLDatabase.getLedgerList());
 
         List<MenuItem> menuItemList = new ArrayList<>();
         for (Ledger ledger : ledgerList) {
@@ -67,7 +68,7 @@ public class DashboardScreenController implements Initializable {
         initializeMenuItems();
 
         if (!ledgerList.isEmpty()) {
-            database.setLedger(ledgerItem);
+            mySQLDatabase.setLedger(ledgerItem);
             menuLedgers.setText(ledgerItem.getLedgerName());
         }
     }
@@ -81,9 +82,9 @@ public class DashboardScreenController implements Initializable {
                 for (int i = 0; i < ledgerList.size(); i++) {
                     if (ledgerList.get(i).getLedgerName().equals(menuItem.getText())) {
                         if (!menuItem.getText().equals("ALL")) {
-                            database.setLedger(ledgerList.get(i));
+                            mySQLDatabase.setLedger(ledgerList.get(i));
                         } else {
-                            database.setLedger(ledgerList.get(i));
+                            mySQLDatabase.setLedger(ledgerList.get(i));
                         }
                         menuLedgers.setText(menuItem.getText());
                     }

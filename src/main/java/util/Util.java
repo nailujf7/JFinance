@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.Optional;
 
 /**
+ * @author Julian Flieter
  * Util class to manage views and UI elements
  */
 public class Util {

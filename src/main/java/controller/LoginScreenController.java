@@ -11,7 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import util.ConfigData;
 import util.Constants;
-import util.Database;
+import database.MySQLDatabase;
 import util.Util;
 
 import java.io.IOException;
@@ -19,6 +19,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
+ * @author Julian Flieter
  * Controller for LoginScreen
  */
 public class LoginScreenController implements Initializable {
@@ -27,7 +28,7 @@ public class LoginScreenController implements Initializable {
     public PasswordField textFieldPassword;
     public ImageView imageViewProfile;
     public JFXCheckBox checkBoxRemeberMe;
-    private Database database = Database.getDatabase();
+    private MySQLDatabase mySQLDatabase = MySQLDatabase.getMySQLDatabase();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -41,7 +42,7 @@ public class LoginScreenController implements Initializable {
      * @throws IOException
      */
     public void signIn(Event event) throws IOException {
-        if (database.authenticate(textFieldUsername.getText(), textFieldPassword.getText())) {
+        if (mySQLDatabase.authenticate(textFieldUsername.getText(), textFieldPassword.getText())) {
             saveData();
             Util.showDashboardScreen(event);
         } else {

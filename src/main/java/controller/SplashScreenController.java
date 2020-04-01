@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
+ * @author Julian Flieter
  * Controller for SplashScreen
  */
 public class SplashScreenController implements Initializable {
@@ -46,13 +47,13 @@ public class SplashScreenController implements Initializable {
         root.getChildren().setAll(pane);
 
         //Load splash screen with fade in effect
-        FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.75), pane);
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), pane);
         fadeIn.setFromValue(0);
         fadeIn.setToValue(1);
         fadeIn.setCycleCount(1);
 
         //Finish splash with fade out effect
-        FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.75), pane);
+        FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), pane);
         fadeOut.setFromValue(1);
         fadeOut.setToValue(0);
         fadeOut.setCycleCount(1);

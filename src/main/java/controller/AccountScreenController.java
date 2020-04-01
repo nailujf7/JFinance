@@ -10,7 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import util.ConfigData;
 import util.Constants;
-import util.Database;
+import database.MySQLDatabase;
 import util.Util;
 
 import java.io.IOException;
@@ -18,6 +18,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
+ * @author Julian Flieter
  * Controller class for AccountScreen
  */
 public class AccountScreenController implements Initializable {
@@ -28,7 +29,7 @@ public class AccountScreenController implements Initializable {
     public TextField usernameTextField;
     public PasswordField passwordTextField;
     public JFXColorPicker colorPicker;
-    private Database database = Database.getDatabase();
+    private MySQLDatabase mySQLDatabase = MySQLDatabase.getMySQLDatabase();
 
 
     @Override
@@ -41,11 +42,11 @@ public class AccountScreenController implements Initializable {
      * Loads the data of the current user account and maps them to the respective UI fields
      */
     public void loadAccountData() {
-        firstnameTextField.setText(database.getAccount().getFirstname());
-        lastameTextField.setText(database.getAccount().getLastname());
-        dateOfBirth.setValue(Util.convertToLocalDateViaUtilDate(database.getAccount().getDateOfBirth()));
-        usernameTextField.setText(database.getAccount().getUsername());
-        passwordTextField.setText(database.getAccount().getPassword());
+        firstnameTextField.setText(mySQLDatabase.getAccount().getFirstname());
+        lastameTextField.setText(mySQLDatabase.getAccount().getLastname());
+        dateOfBirth.setValue(Util.convertToLocalDateViaUtilDate(mySQLDatabase.getAccount().getDateOfBirth()));
+        usernameTextField.setText(mySQLDatabase.getAccount().getUsername());
+        passwordTextField.setText(mySQLDatabase.getAccount().getPassword());
     }
 
     /**
@@ -62,7 +63,7 @@ public class AccountScreenController implements Initializable {
                 Util.changeThemeColor(colorPicker.getValue());
             }
             Util.loadLedger();
-            database.updateAccount(firstnameTextField.getText(), lastameTextField.getText(), Util.convert2Date(dateOfBirth.getValue()), usernameTextField.getText(), passwordTextField.getText());
+            mySQLDatabase.updateAccount(firstnameTextField.getText(), lastameTextField.getText(), Util.convert2Date(dateOfBirth.getValue()), usernameTextField.getText(), passwordTextField.getText());
             Util.showLoginScreen(event);
         }
     }
@@ -75,7 +76,7 @@ public class AccountScreenController implements Initializable {
     public void deleteAccount(ActionEvent event) throws IOException {
         if (Util.confirmationAlert("Do you really want to delete this entry?")) {
             ConfigData.setDefaultData();
-            database.deleteAccount();
+            mySQLDatabase.deleteAccount();
             Util.showRegistrationScreen(event);
         }
     }

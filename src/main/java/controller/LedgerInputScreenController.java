@@ -9,7 +9,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import model.Ledger;
-import util.Database;
+import database.MySQLDatabase;
 import util.Util;
 
 import java.io.IOException;
@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 /**
+ * @author Julian Flieter
  * Controller class for LedgerInputScreen
  */
 public class LedgerInputScreenController implements Initializable {
@@ -27,8 +28,7 @@ public class LedgerInputScreenController implements Initializable {
     public DatePicker textFieldLedgerCreationDate;
     public Button buttonSaveLedger;
     public TextArea textAreaDescription;
-    public AnchorPane anchorPaneLedgerInput;
-    private Database database = Database.getDatabase();
+    private MySQLDatabase mySQLDatabase = MySQLDatabase.getMySQLDatabase();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -43,7 +43,7 @@ public class LedgerInputScreenController implements Initializable {
      * Shows ledger entry details
      */
     private void showLedgerEntryDetails() {
-        Ledger ledger = database.getSelectedLedger();
+        Ledger ledger = mySQLDatabase.getSelectedLedger();
         if (ledger != null) {
             textfieldLedgerName.setText(ledger.getLedgerName());
             textAreaDescription.setText(ledger.getDescription());
@@ -57,11 +57,11 @@ public class LedgerInputScreenController implements Initializable {
      */
     public void saveUpdateLedgerEntry(ActionEvent event) {
         if (textFieldLedgerCreationDate.getValue() != null) {
-            if (database.getLedger() == null) {
-                database.saveLedgerEntry(textfieldLedgerName.getText(), textAreaDescription.getText(),
+            if (mySQLDatabase.getLedger() == null) {
+                mySQLDatabase.saveLedgerEntry(textfieldLedgerName.getText(), textAreaDescription.getText(),
                         Util.convert2Date(textFieldLedgerCreationDate.getValue()));
             } else {
-                database.updateLedgerEntry(textfieldLedgerName.getText(), textAreaDescription.getText(),
+                mySQLDatabase.updateLedgerEntry(textfieldLedgerName.getText(), textAreaDescription.getText(),
                         Util.convert2Date(textFieldLedgerCreationDate.getValue()));
             }
             Util.refreshLedgerMenu();
@@ -80,7 +80,7 @@ public class LedgerInputScreenController implements Initializable {
     public void deleteLedgerEntry(ActionEvent event) throws IOException {
         LedgerOverviewScreenController los = Util.fxmlLoaderLOS.getController();
         if (Util.confirmationAlert("Do you really want to delete this entry?")) {
-            database.deleteLedgerEntry(los.tableViewLedger.getSelectionModel().getSelectedItem());
+            mySQLDatabase.deleteLedgerEntry(los.tableViewLedger.getSelectionModel().getSelectedItem());
             if (LedgerInputScreenController.isEntryDetail) {
                 Util.refreshLedgerMenu();
                 Util.refreshLedgerData();

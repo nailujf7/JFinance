@@ -1,18 +1,22 @@
-package util;
+package database;
 
 import model.Account;
 import model.Ledger;
 import model.Payment;
 import org.hibernate.query.Query;
+import util.CSVParser;
+import util.Constants;
+import util.HibernateUtil;
+import util.Util;
 
 import java.sql.Date;
 import java.util.List;
 
 /**
- * Database class to manage data and queries
+ * MySQLDatabase class to manage data and queries
  */
-public class Database {
-    private static Database database = new Database();
+public class MySQLDatabase {
+    private static MySQLDatabase mySQLDatabase = new MySQLDatabase();
     private Ledger ledger;
     private Payment payment;
     private Account account;
@@ -29,11 +33,7 @@ public class Database {
         q.setParameter("password", password);
         account = (Account) q.uniqueResult();
         HibernateUtil.closeCurrentSession();
-        if (account != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return account != null;
     }
 
     /**
@@ -196,7 +196,7 @@ public class Database {
      */
     public void saveLedgerEntry(String ledgerName, String description, java.sql.Date date) {
         HibernateUtil.openCurrentSessionWithTransaction();
-        database.setLedger(new Ledger(ledgerName, date, description));
+        mySQLDatabase.setLedger(new Ledger(ledgerName, date, description));
         persistAccountAndLedger();
         HibernateUtil.getCurrentSession().save(ledger);
         HibernateUtil.closeCurrentSessionWithTransaction();
@@ -210,9 +210,9 @@ public class Database {
      */
     public void updateLedgerEntry(String ledgerName, String description, java.sql.Date date) {
         HibernateUtil.openCurrentSessionWithTransaction();
-        database.getLedger().setLedgerName(ledgerName);
-        database.getLedger().setDescription(description);
-        database.getLedger().setDate(date);
+        mySQLDatabase.getLedger().setLedgerName(ledgerName);
+        mySQLDatabase.getLedger().setDescription(description);
+        mySQLDatabase.getLedger().setDate(date);
         HibernateUtil.getCurrentSession().update(ledger);
         HibernateUtil.closeCurrentSessionWithTransaction();
     }
@@ -226,7 +226,7 @@ public class Database {
      */
     public void savePaymentEntry(String firstname, double amount, java.sql.Date date, String information) {
         HibernateUtil.openCurrentSessionWithTransaction();
-        database.setPayment(new Payment(firstname, amount, date, information));
+        mySQLDatabase.setPayment(new Payment(firstname, amount, date, information));
         persistLedgerAndPayment();
         HibernateUtil.getCurrentSession().save(payment);
         HibernateUtil.closeCurrentSessionWithTransaction();
@@ -241,10 +241,10 @@ public class Database {
      */
     public void updatePaymentEntry(String firstname, double amount, java.sql.Date date, String information) {
         HibernateUtil.openCurrentSessionWithTransaction();
-        database.getPayment().setName(firstname);
-        database.getPayment().setAmount(amount);
-        database.getPayment().setDate(date);
-        database.getPayment().setInformation(information);
+        mySQLDatabase.getPayment().setName(firstname);
+        mySQLDatabase.getPayment().setAmount(amount);
+        mySQLDatabase.getPayment().setDate(date);
+        mySQLDatabase.getPayment().setInformation(information);
         HibernateUtil.getCurrentSession().update(payment);
         HibernateUtil.closeCurrentSessionWithTransaction();
     }
@@ -259,7 +259,7 @@ public class Database {
      */
     public void updateAccount(String firstname, String lastname, Date date, String username, String password) {
         HibernateUtil.openCurrentSessionWithTransaction();
-        Account account = HibernateUtil.getCurrentSession().load(Account.class, database.getAccount().getAccount_id());
+        Account account = HibernateUtil.getCurrentSession().load(Account.class, mySQLDatabase.getAccount().getAccount_id());
         account.setFirstname(firstname);
         account.setLastname(lastname);
         account.setDateOfBirth(date);
@@ -275,7 +275,7 @@ public class Database {
      */
     public void saveNotes(String notes) {
         HibernateUtil.openCurrentSessionWithTransaction();
-        Account account = HibernateUtil.getCurrentSession().load(Account.class, database.getAccount().getAccount_id());
+        Account account = HibernateUtil.getCurrentSession().load(Account.class, mySQLDatabase.getAccount().getAccount_id());
         account.setNotes(notes);
         HibernateUtil.getCurrentSession().update(account);
         HibernateUtil.closeCurrentSessionWithTransaction();
@@ -291,7 +291,7 @@ public class Database {
      */
     public void createAccount(String firstname, String lastname, Date date, String username, String password) {
         HibernateUtil.openCurrentSessionWithTransaction();
-        database.setAccount((new Account(firstname, lastname, date, username, password)));
+        mySQLDatabase.setAccount((new Account(firstname, lastname, date, username, password)));
         HibernateUtil.getCurrentSession().save(account);
         HibernateUtil.closeCurrentSessionWithTransaction();
     }
@@ -414,18 +414,18 @@ public class Database {
     }
 
     /**
-     * Getter for database
-     * @return database
+     * Getter for mySQLDatabase
+     * @return mySQLDatabase
      */
-    public static Database getDatabase() {
-        return database;
+    public static MySQLDatabase getMySQLDatabase() {
+        return mySQLDatabase;
     }
 
     /**
-     * Setter for database
-     * @param database database
+     * Setter for mySQLDatabase
+     * @param mySQLDatabase mySQLDatabase
      */
-    public static void setDatabase(Database database) {
-        Database.database = database;
+    public static void setMySQLDatabase(MySQLDatabase mySQLDatabase) {
+        MySQLDatabase.mySQLDatabase = mySQLDatabase;
     }
 }

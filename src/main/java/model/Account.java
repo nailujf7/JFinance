@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * @author Julian Flieter
  * Account entity class which represents a user account
  */
 @Entity

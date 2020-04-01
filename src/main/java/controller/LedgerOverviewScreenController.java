@@ -9,7 +9,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Ledger;
-import util.Database;
+import database.MySQLDatabase;
 import util.Util;
 
 import java.io.IOException;
@@ -17,6 +17,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * @author Julian Flieter
+ * Controller for LedgerOverviewScreen
+ */
 public class LedgerOverviewScreenController implements Initializable {
 
     public Button buttonAddLedger;
@@ -26,7 +30,7 @@ public class LedgerOverviewScreenController implements Initializable {
     public TableColumn<Ledger, String> tableColumnDescription;
     public JFXButton buttonDeleteLedger;
     public JFXButton buttonSelect;
-    private Database database = Database.getDatabase();
+    private MySQLDatabase mySQLDatabase = MySQLDatabase.getMySQLDatabase();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -38,7 +42,7 @@ public class LedgerOverviewScreenController implements Initializable {
      */
     public void populateLedgerTable() {
         ObservableList<Ledger> ledgers = FXCollections.observableArrayList();
-        List eList = database.getLedgerList();
+        List eList = mySQLDatabase.getLedgerList();
         if (eList != (null)) {
             ledgers.addAll(eList);
         }
@@ -56,7 +60,7 @@ public class LedgerOverviewScreenController implements Initializable {
         Ledger ledger = tableViewLedger.getSelectionModel().getSelectedItem();
         if (ledger != null) {
             LedgerInputScreenController.isEntryDetail = true;
-            database.setLedger(ledger);
+            mySQLDatabase.setLedger(ledger);
             Util.showLedgerInputScreen();
         } else {
             Util.warningAlert("Please select a ledger entry!");
@@ -70,7 +74,7 @@ public class LedgerOverviewScreenController implements Initializable {
         Ledger ledger = tableViewLedger.getSelectionModel().getSelectedItem();
         if (ledger != null) {
             if (Util.confirmationAlert("Do you really want to delete this ledger entry?")) {
-                database.deleteLedgerEntry(ledger);
+                mySQLDatabase.deleteLedgerEntry(ledger);
                 populateLedgerTable();
                 Util.refreshLedgerMenu();
             }
@@ -84,7 +88,7 @@ public class LedgerOverviewScreenController implements Initializable {
      * @throws IOException
      */
     public void addLedger() throws IOException {
-        database.setLedger(null);
+        mySQLDatabase.setLedger(null);
         Util.showLedgerInputScreen();
     }
 

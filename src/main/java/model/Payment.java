@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * @author Julian Flieter
  * Payment entity class that represents the payments within a ledger
  */
 @Entity

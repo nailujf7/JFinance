@@ -5,6 +5,7 @@ import controller.LoginScreenController;
 import java.util.prefs.Preferences;
 
 /**
+ * @author Julian Flieter
  * ConfigData class to manage configuration of user such as remembering user credentials or theme color
  */
 public class ConfigData {

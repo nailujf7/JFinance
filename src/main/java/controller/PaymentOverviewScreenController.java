@@ -12,7 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Payment;
 import util.CSVParser;
-import util.Database;
+import database.MySQLDatabase;
 import util.PDFCreator;
 import util.Util;
 
@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
+ * @author Julian Flieter
  * Controller for PaymentOverviewScreen
  */
 public class PaymentOverviewScreenController implements Initializable {
@@ -40,7 +41,7 @@ public class PaymentOverviewScreenController implements Initializable {
     public TextField textFieldBalance;
     public JFXButton buttonAdd;
     public JFXButton buttonImport;
-    private Database database = Database.getDatabase();
+    private MySQLDatabase mySQLDatabase = MySQLDatabase.getMySQLDatabase();
     private ObservableList<Payment> payments;
 
     @Override
@@ -56,11 +57,11 @@ public class PaymentOverviewScreenController implements Initializable {
         disableButtons();
         List <Payment> eList;
         if (Util.isAccountPayments()) {
-            eList = database.getAccountPayments();
-            textFieldBalance.setText(database.getSumAmountAll() + " €");
+            eList = mySQLDatabase.getAccountPayments();
+            textFieldBalance.setText(mySQLDatabase.getSumAmountAll() + " €");
         } else {
-            eList = database.getPaymentList();
-            textFieldBalance.setText(database.getSumAmount() + " €");
+            eList = mySQLDatabase.getPaymentList();
+            textFieldBalance.setText(mySQLDatabase.getSumAmount() + " €");
         }
         if (eList != (null)) {
             payments.addAll(eList);
@@ -131,7 +132,7 @@ public class PaymentOverviewScreenController implements Initializable {
         Payment payment = tableViewPayment.getSelectionModel().getSelectedItem();
         if (payment != null) {
             if (Util.confirmationAlert("Do you really want to delete this payment entry?")) {
-                database.deletePaymentEntry(payment);
+                mySQLDatabase.deletePaymentEntry(payment);
                 PaymentOverviewScreenController paymentOverviewScreenController = Util.fxmlLoaderPOS.getController();
                 if (PaymentOverviewScreenController.windowClosed) {
                     Util.windowClose(event);
@@ -151,7 +152,7 @@ public class PaymentOverviewScreenController implements Initializable {
         Payment payment = tableViewPayment.getSelectionModel().getSelectedItem();
         if (payment != null) {
             PaymentInputScreenController.isEntryDetail = true;
-            database.setPayment(payment);
+            mySQLDatabase.setPayment(payment);
             Util.showPaymentInputScreen();
         } else {
             Util.warningAlert("Please select a payment entry!");
@@ -163,7 +164,7 @@ public class PaymentOverviewScreenController implements Initializable {
      * @throws IOException
      */
     public void addPayment() throws IOException {
-        database.setPayment(null);
+        mySQLDatabase.setPayment(null);
         Util.showPaymentInputScreen();
     }
 

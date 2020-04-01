@@ -12,7 +12,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
 import model.Ledger;
 import model.Payment;
-import util.Database;
+import database.MySQLDatabase;
 import util.Util;
 
 import java.net.URL;
@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
+ * @author Julian Flieter
  * Controller class for ChartScreen
  */
 public class ChartScreenController implements Initializable {
@@ -35,15 +36,15 @@ public class ChartScreenController implements Initializable {
     private XYChart.Series<Number, Number> seriesLineChart;
     private List<Payment> payments;
     private List<Ledger> ledgers;
-    private Database database = Database.getDatabase();
+    private MySQLDatabase mySQLDatabase = MySQLDatabase.getMySQLDatabase();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         createPieChart();
         createLineChart();
         createBarChart();
-        labelTotalBalance.setText("Total Balance: " + database.getSumAmountAll() + " €");
-        notesAreaTextField.setText(database.getNotes());
+        labelTotalBalance.setText("Total Balance: " + mySQLDatabase.getSumAmountAll() + " €");
+        notesAreaTextField.setText(mySQLDatabase.getNotes());
     }
 
     /**
@@ -52,9 +53,9 @@ public class ChartScreenController implements Initializable {
     public void createLineChart() {
         seriesLineChart = new XYChart.Series<>();
         if (Util.getSelectedLedgerName().equals("ALL")) {
-            payments = database.getAccountPayments();
+            payments = mySQLDatabase.getAccountPayments();
         } else {
-            payments = database.getPaymentList();
+            payments = mySQLDatabase.getPaymentList();
         }
         for (Payment payment : payments) {
             if (payment != null)
@@ -71,8 +72,8 @@ public class ChartScreenController implements Initializable {
         seriesBarChart = new XYChart.Series<>();
         for (Ledger ledger : ledgers) {
             if (ledger != null) {
-                database.setLedger(ledger);
-                barChartData = new XYChart.Data<>(ledger.getLedgerName(), database.getSumAmount());
+                mySQLDatabase.setLedger(ledger);
+                barChartData = new XYChart.Data<>(ledger.getLedgerName(), mySQLDatabase.getSumAmount());
                 seriesBarChart.getData().add(barChartData);
             }
         }
@@ -84,14 +85,14 @@ public class ChartScreenController implements Initializable {
      * Create pie chart and add data to it
      */
     private void createPieChart() {
-        ledgers = database.getLedgerList();
+        ledgers = mySQLDatabase.getLedgerList();
         ObservableList<PieChart.Data> pieChartData =
                 FXCollections.observableArrayList();
         int i = 0;
         for (Ledger ledger : ledgers) {
-            List<Double> list = database.getLedgerTotalBalance();
+            List<Double> list = mySQLDatabase.getLedgerTotalBalance();
             if (i < list.size()) {
-                double sum = database.getLedgerTotalBalance().get(i++);
+                double sum = mySQLDatabase.getLedgerTotalBalance().get(i++);
                 pieChartData.add(new PieChart.Data(ledger.getLedgerName(), sum));
             }
         }
@@ -138,7 +139,7 @@ public class ChartScreenController implements Initializable {
         for (XYChart.Series<String, Number> s : barChart.getData()) {
             for (XYChart.Data<String, Number> d : s.getData()) {
                 Tooltip tooltip = new Tooltip();
-                List ledgers = database.getLedgerTotalBalance();
+                List ledgers = mySQLDatabase.getLedgerTotalBalance();
                 if (i != ledgers.size()) {
                     tooltip.setText((ledgers.get(i++) + " €"));
                     Tooltip.install(d.getNode(), tooltip);
@@ -167,7 +168,7 @@ public class ChartScreenController implements Initializable {
      * Save notes of chart screen
      */
     public void saveNotes() {
-        database.saveNotes(notesAreaTextField.getText());
+        mySQLDatabase.saveNotes(notesAreaTextField.getText());
     }
 
     /**

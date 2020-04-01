@@ -1,6 +1,7 @@
 package util;
 
 import au.com.bytecode.opencsv.CSVReader;
+import database.MySQLDatabase;
 import model.Payment;
 
 import java.io.File;
@@ -12,12 +13,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author Julian Flieter
+ * CSVParser class to import MT940 CSV file from Sparkasse Online-Banking
+ */
 public class CSVParser {
-    private static Database database = Database.getDatabase();
+    private static MySQLDatabase mySQLDatabase = MySQLDatabase.getMySQLDatabase();
     private static List<Payment> payments;
 
     /**
-     * Imports CSV file entries to database
+     * Imports CSV file entries to mySQLDatabase
      * @param file
      * @throws IOException
      * @throws ParseException
@@ -36,7 +41,7 @@ public class CSVParser {
             Date date = new SimpleDateFormat("dd.MM.yyyy").parse(Util.parseDateToFormat((row[2])));
             payments.add(new Payment(name, Double.valueOf(amount.replace(",", ".")), new java.sql.Date(date.getTime()), information));
         }
-        database.batchPaymentInsert();
+        mySQLDatabase.batchPaymentInsert();
 
     }
 
@@ -61,7 +66,7 @@ public class CSVParser {
 //                String information = formatter.formatCellValue(sheet.getRow(rowNumber).getCell(4));
 //                Date date = sheet.getRow(rowNumber).getCell(2).getDateCellValue();
 //                i++;
-//                database.batchPaymentInsert(name, Double.valueOf(amount.replace(",", ".")), new java.sql.Date(date.getTime()), information);
+//                mySQLDatabase.batchPaymentInsert(name, Double.valueOf(amount.replace(",", ".")), new java.sql.Date(date.getTime()), information);
 //            }
 //            fileInputStream.close();
 //            FileOutputStream out = new FileOutputStream(file);
