@@ -47,7 +47,7 @@ public class ChartScreenController implements Initializable {
     }
 
     /**
-     * Create line charts and add data to it
+     * Create line chart and add data to it
      */
     public void createLineChart() {
         seriesLineChart = new XYChart.Series<>();

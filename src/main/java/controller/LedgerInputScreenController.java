@@ -52,7 +52,7 @@ public class LedgerInputScreenController implements Initializable {
     }
 
     /**
-     * Save or update ledger entry
+     * Saves or updates ledger entry
      * @param event
      */
     public void saveUpdateLedgerEntry(ActionEvent event) {
@@ -73,7 +73,7 @@ public class LedgerInputScreenController implements Initializable {
     }
 
     /**
-     * Delete ledger entry
+     * Deletes ledger entry
      * @param event
      * @throws IOException
      */

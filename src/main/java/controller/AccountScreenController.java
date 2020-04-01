@@ -38,7 +38,7 @@ public class AccountScreenController implements Initializable {
     }
 
     /**
-     * Loads the data of the current account user and maps them to the respective UI fields
+     * Loads the data of the current user account and maps them to the respective UI fields
      */
     public void loadAccountData() {
         firstnameTextField.setText(database.getAccount().getFirstname());

@@ -97,7 +97,7 @@ public class LoginScreenController implements Initializable {
     }
 
     /**
-     * Login in if enter button is pressed
+     * Logs in if enter button is pressed
      * @param keyEvent
      * @throws IOException
      */

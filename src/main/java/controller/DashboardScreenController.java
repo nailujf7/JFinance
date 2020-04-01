@@ -48,7 +48,7 @@ public class DashboardScreenController implements Initializable {
     }
 
     /**
-     * Load ledger names to UI menu button and items
+     * Loads ledger names to UI menu button and items
      */
     public void loadLedgerMenu() {
         menuLedgers.getItems().clear();
@@ -165,7 +165,7 @@ public class DashboardScreenController implements Initializable {
     }
 
     /**
-     * Sign out from account
+     * Signs out from account
      * @param event
      * @throws IOException
      */

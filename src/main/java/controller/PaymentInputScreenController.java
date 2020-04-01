@@ -38,7 +38,7 @@ public class PaymentInputScreenController implements Initializable {
     }
 
     /**
-     * Save or updates payment entry
+     * Saves or updates payment entry
      * @param event
      */
     public void saveUpdatePaymentEntry(ActionEvent event) {
