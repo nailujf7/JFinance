@@ -5,8 +5,11 @@ A desktop application written in java, which is used to manage finances.
 As I have to manage different bank accounts not only from myself but also for my grandparents, I faced the issue of losing overview of the finances. I always used a simple document to keep track of my finances but that was cumbersome. Since I always wanted to develop my own application I came across the idea to build an application in which I could easily manage my finances and more. 
 
 ![](https://github.com/nailujf7/JFinance/blob/master/IMG/jfinance.gif)
-![](https://github.com/nailujf7/JFinance/blob/master/IMG/jfinance_themes.gif)
+
 ![](https://github.com/nailujf7/JFinance/blob/master/IMG/jfinance_login.gif)
+
+![](https://github.com/nailujf7/JFinance/blob/master/IMG/jfinance_themes.gif)
+
 
 ## Getting Started
 
