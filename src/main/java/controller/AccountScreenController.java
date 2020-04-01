@@ -1,6 +1,5 @@
 package controller;
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXColorPicker;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -18,6 +17,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller class for AccountScreen
+ */
 public class AccountScreenController implements Initializable {
     public ImageView imageViewProfile;
     public TextField firstnameTextField;
@@ -25,9 +27,9 @@ public class AccountScreenController implements Initializable {
     public DatePicker dateOfBirth;
     public TextField usernameTextField;
     public PasswordField passwordTextField;
-    public JFXButton buttonDeleteAccount;
     public JFXColorPicker colorPicker;
     private Database database = Database.getDatabase();
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -35,6 +37,9 @@ public class AccountScreenController implements Initializable {
         imageViewProfile.setImage(new Image(ConfigData.loadPrefData("profile", Constants.IMAGE_PROFILE)));
     }
 
+    /**
+     * Loads the data of the current account user and maps them to the respective UI fields
+     */
     public void loadAccountData() {
         firstnameTextField.setText(database.getAccount().getFirstname());
         lastameTextField.setText(database.getAccount().getLastname());
@@ -43,6 +48,11 @@ public class AccountScreenController implements Initializable {
         passwordTextField.setText(database.getAccount().getPassword());
     }
 
+    /**
+     * Saves account changes such as theme color or account information
+     * @param event
+     * @throws IOException
+     */
     public void saveAccount(ActionEvent event) throws IOException {
         if (Util.confirmationAlert("Do you really want to apply your changes?\nYou will be logged out!")) {
             if (Util.getFile() != null) {
@@ -57,6 +67,11 @@ public class AccountScreenController implements Initializable {
         }
     }
 
+    /**
+     * Deletes the account and all related data
+     * @param event
+     * @throws IOException
+     */
     public void deleteAccount(ActionEvent event) throws IOException {
         if (Util.confirmationAlert("Do you really want to delete this entry?")) {
             ConfigData.setDefaultData();
@@ -65,6 +80,9 @@ public class AccountScreenController implements Initializable {
         }
     }
 
+    /**
+     * Opens file chooser to change account profile picture
+     */
     public void showFileChooser() {
         Util.showFileChooser(imageViewProfile);
     }

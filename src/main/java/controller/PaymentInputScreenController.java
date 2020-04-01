@@ -16,6 +16,9 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for InputScreen
+ */
 public class PaymentInputScreenController implements Initializable {
 
     public static boolean isEntryDetail = false;
@@ -34,6 +37,10 @@ public class PaymentInputScreenController implements Initializable {
         }
     }
 
+    /**
+     * Save or updates payment entry
+     * @param event
+     */
     public void saveUpdatePaymentEntry(ActionEvent event) {
         if (textFieldDate.getValue() != null) {
             try {
@@ -46,22 +53,30 @@ public class PaymentInputScreenController implements Initializable {
                 }
                 windowClose(event);
                 PaymentOverviewScreenController paymentOverviewScreenController = Util.fxmlLoaderPOS.getController();
-                paymentOverviewScreenController.loadPaymentData();
+                paymentOverviewScreenController.populatePaymentTable();
             } catch (NumberFormatException e) {
-                Util.wrongWarningAlert("Wrong input, please type in only numbers!");
+                Util.warningAlert("Wrong input, please type in only numbers!");
             }
         } else {
-            Util.wrongWarningAlert("Please select a date for your payment!");
+            Util.warningAlert("Please select a date for your payment!");
         }
     }
 
+    /**
+     * Converts local date to util date
+     * @param dateToConvert
+     * @return
+     */
     public LocalDate convertToLocalDateViaUtilDate(java.util.Date dateToConvert) {
         return new java.util.Date(dateToConvert.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
+    /**
+     * Shows payment entry details
+     */
     private void showPaymentEntryDetails() {
         PaymentInputScreenController.isEntryDetail = true;
-        Payment payment = database.getCurrentPayment();
+        Payment payment = database.getSelectedPayment();
         if (payment != null) {
             textfieldFirstname.setText(payment.getName());
             textFieldAmount.setText(String.valueOf(payment.getAmount()));
@@ -70,11 +85,18 @@ public class PaymentInputScreenController implements Initializable {
         }
     }
 
+    /**
+     * Deletes payment entry
+     * @param event
+     * @throws IOException
+     */
     public void deletePaymentEntry(ActionEvent event) throws IOException {
         if (Util.confirmationAlert("Do you really want to delete this entry?")) {
-            database.deletePaymentEntry(database.getCurrentPayment());
+            database.deletePaymentEntry(database.getSelectedPayment());
             if (PaymentInputScreenController.isEntryDetail) {
-                closeInputScreen(event);
+                Util.showLedgerOverviewScreen();
+                windowClose(event);
+                PaymentInputScreenController.isEntryDetail = false;
                 Util.refreshPaymentData();
             } else {
                 Util.showDashboardScreen(event);
@@ -82,17 +104,18 @@ public class PaymentInputScreenController implements Initializable {
         }
     }
 
-    public void closeInputScreen(ActionEvent event) throws IOException {
-        Util.showLedgerOverviewScreen();
-        windowClose(event);
-        PaymentInputScreenController.isEntryDetail = false;
-        LedgerInputScreenController.isEntryDetail = false;
-    }
-
+    /**
+     * Minimizes window
+     * @param event
+     */
     public void windowMinimize(Event event) {
         Util.windowMinimize(event);
     }
 
+    /**
+     * Closes window
+     * @param event
+     */
     public void windowClose(Event event) {
         Util.windowClose(event);
     }

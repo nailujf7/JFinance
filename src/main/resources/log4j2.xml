@@ -37,6 +37,11 @@
             <AppenderRef ref="File" />
         </Logger>
 
+        <!-- Log Hibernate batch size -->
+        <Logger name="org.hibernate.engine.jdbc.batch.internal.BatchingBatch" level="debug" additivity="false">
+            <AppenderRef ref="Console" />
+        </Logger>
+
         <Root level="error">
             <AppenderRef ref="Console" />
             <AppenderRef ref="File" />

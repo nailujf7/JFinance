@@ -21,7 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class DashboardController implements Initializable {
+/**
+ * Controller class for DashboardScreen
+ */
+public class DashboardScreenController implements Initializable {
 
     public BorderPane borderPaneDashboard;
     public MenuButton menuLedgers;
@@ -30,16 +33,13 @@ public class DashboardController implements Initializable {
     private Database database = Database.getDatabase();
     private List<Ledger> ledgerList;
 
-    public MenuButton getMenuLedgers() {
-        return menuLedgers;
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Util.draggable(borderPaneDashboard);
         labelUser.setText(database.getAccount().getUsername());
         imageProfile.setImage(new Image(ConfigData.loadPrefData("profile", Constants.IMAGE_PROFILE)));
         loadLedgerMenu();
-        database.getLedgerSumAmount();
+        database.getLedgerTotalBalance();
         try {
             openChartOverviewScreen();
         } catch (IOException e) {
@@ -47,12 +47,15 @@ public class DashboardController implements Initializable {
         }
     }
 
+    /**
+     * Load ledger names to UI menu button and items
+     */
     public void loadLedgerMenu() {
         menuLedgers.getItems().clear();
         ledgerList = new ArrayList<>();
-        Ledger item = new Ledger();
-        item.setLedgerName("ALL");
-        ledgerList.add(item);
+        Ledger ledgerItem = new Ledger();
+        ledgerItem.setLedgerName("ALL");
+        ledgerList.add(ledgerItem);
         ledgerList.addAll(database.getLedgerList());
 
         List<MenuItem> menuItemList = new ArrayList<>();
@@ -61,7 +64,18 @@ public class DashboardController implements Initializable {
         }
 
         menuLedgers.getItems().addAll(menuItemList);
+        initializeMenuItems();
 
+        if (!ledgerList.isEmpty()) {
+            database.setLedger(ledgerItem);
+            menuLedgers.setText(ledgerItem.getLedgerName());
+        }
+    }
+
+    /**
+     * Initializes the menu items with names of existing ledgers
+     */
+    private void initializeMenuItems(){
         for (MenuItem menuItem : menuLedgers.getItems()) {
             menuItem.setOnAction(e -> {
                 for (int i = 0; i < ledgerList.size(); i++) {
@@ -79,21 +93,16 @@ public class DashboardController implements Initializable {
                 refreshData();
             });
         }
-
-        if (!ledgerList.isEmpty()) {
-            Ledger ledger = ledgerList.get(0);
-            database.setLedger(ledger);
-            menuLedgers.setText(ledger.getLedgerName());
-        } else {
-            menuLedgers.setText("");
-        }
     }
 
+    /**
+     * Refreshes data of payment table after switching to a different ledger
+     */
     private void refreshData() {
         if (Util.fxmlLoaderPOS != null) {
             Object object = Util.fxmlLoaderPOS.getController();
             if (object instanceof PaymentOverviewScreenController) {
-                ((PaymentOverviewScreenController) object).loadPaymentData();
+                ((PaymentOverviewScreenController) object).populatePaymentTable();
             }
         }
 
@@ -111,42 +120,82 @@ public class DashboardController implements Initializable {
 
     }
 
+    /**
+     * Opens ledger overview screen
+     * @throws IOException
+     */
     public void openLedgerOverviewScreen() throws IOException {
         Util.showLedgerOverviewScreen();
         borderPaneDashboard.setCenter(Util.parent);
     }
 
+    /**
+     * Opens payment overview screen
+     * @throws IOException
+     */
     public void openPaymentOverviewScreen() throws IOException {
         Util.showPaymentOverviewScreen();
         borderPaneDashboard.setCenter(Util.parent);
     }
 
+    /**
+     * Opens chart overview screen
+     * @throws IOException
+     */
     public void openChartOverviewScreen() throws IOException {
         Util.showChartOverviewScreen();
         borderPaneDashboard.setCenter(Util.parent);
     }
 
-    public void openDashboardAccountScreen() throws IOException {
+    /**
+     * Opens account screen
+     * @throws IOException
+     */
+    public void openAccountScreen() throws IOException {
         Util.showAccountScreen();
         borderPaneDashboard.setCenter(Util.parent);
     }
 
+    /**
+     * Getter for UI label
+     * @return label
+     */
     public Label getLabelUser() {
         return labelUser;
     }
 
-    public void openSettingsScreen() {
-    }
-
+    /**
+     * Sign out from account
+     * @param event
+     * @throws IOException
+     */
     public void signOut(ActionEvent event) throws IOException {
         Util.showLoginScreen(event);
     }
 
+    /**
+     * Getter for UI menu button
+     * @return
+     */
+    public MenuButton getMenuLedgers() {
+        return menuLedgers;
+    }
+
+    /**
+     * Minimizes window
+     * @param event
+     */
     public void windowMinimize(Event event) {
         Util.windowMinimize(event);
     }
 
+    /**
+     * Closes window
+     * @param event
+     */
     public void windowClose(Event event) {
         Util.windowClose(event);
     }
+
+
 }

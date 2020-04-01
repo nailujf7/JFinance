@@ -25,6 +25,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for PaymentOverviewScreen
+ */
 public class PaymentOverviewScreenController implements Initializable {
 
     public static boolean windowClosed = false;
@@ -38,14 +41,38 @@ public class PaymentOverviewScreenController implements Initializable {
     public JFXButton buttonAdd;
     public JFXButton buttonImport;
     private Database database = Database.getDatabase();
+    private ObservableList<Payment> payments;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadPaymentData();
-        database.getAccountPayments();
+        populatePaymentTable();
     }
 
-    public void loadPaymentData() {
+    /**
+     * Populates payment table with data
+     */
+    public void populatePaymentTable() {
+        payments = FXCollections.observableArrayList();
+        disableButtons();
+        List <Payment> eList;
+        if (Util.isAccountPayments()) {
+            eList = database.getAccountPayments();
+            textFieldBalance.setText(database.getSumAmountAll() + " €");
+        } else {
+            eList = database.getPaymentList();
+            textFieldBalance.setText(database.getSumAmount() + " €");
+        }
+        if (eList != (null)) {
+            payments.addAll(eList);
+        }
+        createPaymentTable();
+        tableViewPayment.setItems(payments);
+    }
+
+    /**
+     * Disables button add and import button if ledger menu item "ALL" is selected
+     */
+    private void disableButtons() {
         if (Util.isAccountPayments()) {
             buttonAdd.setDisable(true);
             buttonImport.setDisable(true);
@@ -53,28 +80,19 @@ public class PaymentOverviewScreenController implements Initializable {
             buttonAdd.setDisable(false);
             buttonImport.setDisable(false);
         }
-        ObservableList<Payment> payments = FXCollections.observableArrayList();
-        List eList;
-        if (Util.isAccountPayments()) {
-            eList = database.getAccountPayments();
-        } else {
-            eList = database.getPaymentList();
-        }
-        if (eList != (null)) {
-            payments.addAll(eList);
-            if (Util.isAccountPayments()) {
-                textFieldBalance.setText(database.getSumAmountAll() + " €");
-            } else {
-                textFieldBalance.setText(database.getSumAmount() + " €");
-            }
-        }
+    }
+
+    /**
+     * Creates payment table
+     */
+    private void createPaymentTable() {
         textFieldBalance.setEditable(false);
         tableColumnID.setCellValueFactory(new PropertyValueFactory<>("payment_id"));
         tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tableColumnAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         tableColumnAmount.setCellFactory(columnAmount -> {
             TableCell<Payment, Double> cellAmount = new TableCell<Payment, Double>() {
-
                 @Override
                 protected void updateItem(Double item, boolean empty) {
                     super.updateItem(item, empty);
@@ -86,11 +104,9 @@ public class PaymentOverviewScreenController implements Initializable {
             return cellAmount;
         });
 
-        tableColumnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         tableColumnDate.setCellFactory(columnDate -> {
             TableCell<Payment, Date> cellDate = new TableCell<Payment, Date>() {
-                private SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-
+                SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
                 @Override
                 protected void updateItem(Date item, boolean empty) {
                     super.updateItem(item, empty);
@@ -102,56 +118,74 @@ public class PaymentOverviewScreenController implements Initializable {
                     }
                 }
             };
-
             return cellDate;
         });
         tableColumnInformation.setCellValueFactory(new PropertyValueFactory<>("information"));
-        tableViewPayment.setItems(payments);
     }
 
+    /**
+     * Deletes payment entry
+     * @param event
+     */
     public void deletePaymentEntry(Event event) {
-        if (tableViewPayment.getSelectionModel().getSelectedItem() != null) {
+        Payment payment = tableViewPayment.getSelectionModel().getSelectedItem();
+        if (payment != null) {
             if (Util.confirmationAlert("Do you really want to delete this payment entry?")) {
-                database.deletePaymentEntry(tableViewPayment.getSelectionModel().getSelectedItem());
+                database.deletePaymentEntry(payment);
                 PaymentOverviewScreenController paymentOverviewScreenController = Util.fxmlLoaderPOS.getController();
                 if (PaymentOverviewScreenController.windowClosed) {
                     Util.windowClose(event);
                 }
-                paymentOverviewScreenController.loadPaymentData();
+                paymentOverviewScreenController.populatePaymentTable();
             }
         } else {
-            Util.wrongWarningAlert("No payment entry selected!");
+            Util.warningAlert("No payment entry selected!");
         }
     }
 
-    private void showSelectedPayment() {
-        PaymentInputScreenController.isEntryDetail = true;
-        database.setPayment((tableViewPayment.getSelectionModel().getSelectedItem()));
-    }
-
+    /**
+     * Shows payment details
+     * @throws IOException
+     */
     public void showPaymentDetails() throws IOException {
-        if (tableViewPayment.getSelectionModel().getSelectedItem() != null) {
-            showSelectedPayment();
+        Payment payment = tableViewPayment.getSelectionModel().getSelectedItem();
+        if (payment != null) {
+            PaymentInputScreenController.isEntryDetail = true;
+            database.setPayment(payment);
             Util.showPaymentInputScreen();
         } else {
-            Util.wrongWarningAlert("Please select a payment entry!");
+            Util.warningAlert("Please select a payment entry!");
         }
     }
 
+    /**
+     * Opens payment input screen to add a new entry
+     * @throws IOException
+     */
     public void addPayment() throws IOException {
         database.setPayment(null);
         Util.showPaymentInputScreen();
     }
 
-    public void exportLedger() {
+    /**
+     * Exports payments of ledger to PDF
+     */
+    public void exportLedgerPayments() {
         PDFCreator.createPDF();
     }
 
-    public void importFile() throws IOException, ParseException {
+    /**
+     * Imports CSV files
+     * Note: Only import a CSV MT940 file from Sparkasse OB
+     * @throws IOException
+     * @throws ParseException
+     */
+    public void importCSV() throws IOException, ParseException {
+        Util.warningAlert("Please import only semicolon separated CSV files in MT940 format from Sparkasse!");
         File file = Util.chooseFile();
         if (file != null) {
-            CSVParser.importExcelFile(file);
-            loadPaymentData();
+            CSVParser.importCSV(file);
+            populatePaymentTable();
         }
     }
 }

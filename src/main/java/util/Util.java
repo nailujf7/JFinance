@@ -10,11 +10,12 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import controller.DashboardController;
+import controller.DashboardScreenController;
 import controller.LedgerOverviewScreenController;
 import controller.PaymentOverviewScreenController;
 
@@ -30,6 +31,9 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.Optional;
 
+/**
+ * Util class to manage views and UI elements
+ */
 public class Util {
     public static FXMLLoader fxmlLoaderCS;
     public static FXMLLoader fxmlLoaderPOS;
@@ -42,43 +46,73 @@ public class Util {
     public static FXMLLoader fxmlLoaderAS;
     public static Parent parent;
     public static Stage stage;
-    private static Scene scene;
     private static File file;
+    private static double xOffset = 0;
+    private static double yOffset = 0;
 
+    /**
+     * Shows chart screen
+     * @throws IOException
+     */
     public static void showChartOverviewScreen() throws IOException {
         fxmlLoaderCS = new FXMLLoader(Util.class.getClassLoader().getResource(Constants.DASHBOARD_OVERVIEW_SCREEEN));
         parent = fxmlLoaderCS.load();
         parent.setStyle(ConfigData.loadPrefData("theme", Constants.STANDARD_THEME));
     }
 
+    /**
+     * Shows payment overview screen
+     * @throws IOException
+     */
     public static void showPaymentOverviewScreen() throws IOException {
         fxmlLoaderPOS = new FXMLLoader(Util.class.getClassLoader().getResource(Constants.PAYMENT_OVERVIEW_SCREEN));
         parent = fxmlLoaderPOS.load();
         parent.setStyle(ConfigData.loadPrefData("theme", Constants.STANDARD_THEME));
     }
 
+    /**
+     * Shows ledger overview screen
+     * @throws IOException
+     */
     public static void showLedgerOverviewScreen() throws IOException {
         fxmlLoaderLOS = new FXMLLoader(Util.class.getClassLoader().getResource(Constants.LEDGER_OVERVIEW_SCREEN));
         parent = fxmlLoaderLOS.load();
         parent.setStyle(ConfigData.loadPrefData("theme", Constants.STANDARD_THEME));
     }
 
+    /**
+     * Show account screen
+     * @throws IOException
+     */
     public static void showAccountScreen() throws IOException {
         fxmlLoaderAS = new FXMLLoader(Util.class.getClassLoader().getResource(Constants.ACCOUNT_SCREEN));
         parent = fxmlLoaderAS.load();
         parent.setStyle(ConfigData.loadPrefData("theme", Constants.STANDARD_THEME));
     }
 
+    /**
+     * Shows payment input screen
+     * @throws IOException
+     */
     public static void showPaymentInputScreen() throws IOException {
         loadInputScreen(Constants.PAYMENT_INPUT_SCREEN);
         parent.setStyle(ConfigData.loadPrefData("theme", Constants.STANDARD_THEME));
     }
 
+    /**
+     * Shows ledger input screen
+     * @throws IOException
+     */
     public static void showLedgerInputScreen() throws IOException {
         loadInputScreen(Constants.LEDGER_INPUT_SCREEN);
         parent.setStyle(ConfigData.loadPrefData("theme", Constants.STANDARD_THEME));
     }
 
+    /**
+     * Loads input screen
+     * @param fxml
+     * @throws IOException
+     */
     private static void loadInputScreen(String fxml) throws IOException {
         fxmlLoaderIS = new FXMLLoader(Util.class.getClassLoader().getResource(fxml));
         parent = fxmlLoaderIS.load();
@@ -88,6 +122,11 @@ public class Util {
         stage.show();
     }
 
+    /**
+     * Show login screen
+     * @param event
+     * @throws IOException
+     */
     public static void showLoginScreen(Event event) throws IOException {
         fxmlLoaderLS = new FXMLLoader(Util.class.getClassLoader().getResource(Constants.LOGIN_SCREEN));
         parent = fxmlLoaderLS.load();
@@ -95,6 +134,11 @@ public class Util {
         parent.setStyle(ConfigData.loadPrefData("theme", Constants.STANDARD_THEME));
     }
 
+    /**
+     * Shows registration screen
+     * @param event
+     * @throws IOException
+     */
     public static void showRegistrationScreen(Event event) throws IOException {
         fxmlLoaderRS = new FXMLLoader(Util.class.getClassLoader().getResource(Constants.REGISTRATION_SCREEN));
         parent = fxmlLoaderRS.load();
@@ -102,7 +146,11 @@ public class Util {
         parent.setStyle(ConfigData.loadPrefData("theme", Constants.STANDARD_THEME));
     }
 
-
+    /**
+     * Shows dashboard screen
+     * @param event
+     * @throws IOException
+     */
     public static void showDashboardScreen(Event event) throws IOException {
         fxmlLoaderDS = new FXMLLoader(Util.class.getClassLoader().getResource(Constants.DASHBOARD_SCREEN));
         parent = fxmlLoaderDS.load();
@@ -110,24 +158,11 @@ public class Util {
         parent.setStyle(ConfigData.loadPrefData("theme", Constants.STANDARD_THEME));
     }
 
-    private static void changeWindow(Event event, Parent parent) {
-        scene = new Scene(parent);
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
-        stage.centerOnScreen();
-    }
-
-    public static void windowMinimize(Event event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setIconified(true);
-    }
-
-    public static void windowClose(Event event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
-    }
-
+    /**
+     * Shows splash screen
+     * @param stage
+     * @throws IOException
+     */
     public static void showSplashScreenScreen(Stage stage) throws IOException {
         fxmlLoaderSPS = new FXMLLoader(Util.class.getClassLoader().getResource(Constants.SPLASH_SCREEN));
         parent = fxmlLoaderSPS.load();
@@ -138,35 +173,79 @@ public class Util {
         stage.show();
     }
 
+    /**
+     * Show new window of different scenes
+     * @param event
+     * @param parent
+     */
+    private static void changeWindow(Event event, Parent parent) {
+        Scene scene = new Scene(parent);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+        stage.centerOnScreen();
+    }
+
+    /**
+     * Minimizes window
+     * @param event
+     */
+    public static void windowMinimize(Event event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setIconified(true);
+    }
+
+    /**
+     * Closes window
+     * @param event
+     */
+    public static void windowClose(Event event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
+    }
+
+    /**
+     * Refreshes ledger data
+     */
     public static void refreshLedgerData() {
         Object object = fxmlLoaderLOS.getController();
         if (object instanceof LedgerOverviewScreenController) {
             LedgerOverviewScreenController bos = (LedgerOverviewScreenController) object;
-            bos.loadLedgerData();
+            bos.populateLedgerTable();
         }
     }
 
+    /**
+     * Refreshes payment data
+     */
     public static void refreshPaymentData() {
         Object object = fxmlLoaderPOS.getController();
         if (object instanceof PaymentOverviewScreenController) {
             PaymentOverviewScreenController pos = (PaymentOverviewScreenController) object;
-            pos.loadPaymentData();
+            pos.populatePaymentTable();
         }
     }
 
+    /**
+     * Refreshes menu button and items
+     */
     public static void refreshLedgerMenu() {
         Object object = fxmlLoaderDS.getController();
-        if (object instanceof DashboardController) {
-            DashboardController dc = (DashboardController) object;
+        if (object instanceof DashboardScreenController) {
+            DashboardScreenController dc = (DashboardScreenController) object;
             dc.loadLedgerMenu();
         }
 
     }
 
+    /**
+     * Checks if menu item ALL is selected
+     * @return
+     */
     public static boolean isAccountPayments() {
         Object object = fxmlLoaderDS.getController();
-        if (object instanceof DashboardController) {
-            DashboardController dc = (DashboardController) object;
+        if (object instanceof DashboardScreenController) {
+            DashboardScreenController dc = (DashboardScreenController) object;
             if (dc.getMenuLedgers().getText().equals("ALL")) {
                 return true;
             } else {
@@ -177,6 +256,11 @@ public class Util {
 
     }
 
+    /**
+     * Confirmation alert
+     * @param alertText confirmation text
+     * @return boolean if confirmed or not
+     */
     public static boolean confirmationAlert(String alertText) {
         ButtonType ok = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
         ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -193,7 +277,11 @@ public class Util {
         }
     }
 
-    public static void wrongWarningAlert(String alertText) {
+    /**
+     * Warning alert
+     * @param alertText warning text
+     */
+    public static void warningAlert(String alertText) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.initStyle(StageStyle.TRANSPARENT);
         alert.setHeaderText(alertText);
@@ -201,10 +289,18 @@ public class Util {
         alert.showAndWait();
     }
 
-    public static void setAlertSymbol(Alert alert) {
+    /**
+     * Sets the alert symbol
+     * @param alert alert symbol
+     */
+    private static void setAlertSymbol(Alert alert) {
         alert.setGraphic(new ImageView(new Image(Constants.IMAGE_ALERT)));
     }
 
+    /**
+     * Shows file chooser to change profile picture
+     * @param imageView profile picture
+     */
     public static void showFileChooser(ImageView imageView) {
         final FileChooser fileChooser = new FileChooser();
         file = fileChooser.showOpenDialog(null);
@@ -213,8 +309,12 @@ public class Util {
         }
     }
 
+    /**
+     * Shows file chooser to save exported PDF file
+     * @return saved file
+     */
     public static File showFileChooser() {
-        DashboardController dc = fxmlLoaderDS.getController();
+        DashboardScreenController dc = fxmlLoaderDS.getController();
         String fileName = "J-Finance_Account_Statements_" + dc.getLabelUser().getText() + "_" + dc.getMenuLedgers().getText() + ".pdf";
         final FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf");
@@ -224,20 +324,30 @@ public class Util {
         return file;
     }
 
+    /**
+     * Convert local date to sql date
+     * @param date local date
+     * @return sql date
+     */
     public static java.sql.Date convert2Date(LocalDate date) {
         return java.sql.Date.valueOf(date);
     }
 
+    /**
+     * Convert util date to local date
+     * @param dateToConvert util date
+     * @return local date
+     */
     public static LocalDate convertToLocalDateViaUtilDate(java.util.Date dateToConvert) {
         return new java.util.Date(dateToConvert.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
-    public static File getFile() {
-        return file;
-    }
-
-
-    public static String colorToHex(Color color) {
+    /**
+     * Converts selected color of color picker to hex
+     * @param color color of color picker
+     * @return hex value of color
+     */
+    private static String colorToHex(Color color) {
         String hex1;
         String hex2;
         parent.setStyle("");
@@ -269,26 +379,46 @@ public class Util {
         return hex2;
     }
 
+    /**
+     * Changes theme color and saves it as preference for user
+     * @param color color of color picker
+     */
     public static void changeThemeColor(Color color) {
         String theme = "-fx-base: #" + colorToHex(color);
-        System.out.println(colorToHex(color));
         ConfigData.setPrefData("theme", theme);
     }
 
+    /**
+     * Loads ledger
+     * @throws IOException
+     */
     public static void loadLedger() throws IOException {
         fxmlLoaderLOS = new FXMLLoader(Util.class.getClassLoader().getResource(Constants.LEDGER_OVERVIEW_SCREEN));
         fxmlLoaderLOS.load();
     }
 
+    /**
+     * Getter for name of selected ledger of menu item
+     * @return name of menu item
+     */
     public static String getSelectedLedgerName(){
-        return ((DashboardController) fxmlLoaderDS.getController()).getMenuLedgers().getText();
+        return ((DashboardScreenController) fxmlLoaderDS.getController()).getMenuLedgers().getText();
     }
 
+    /**
+     * Converts date to string
+     * @param date date that will be converted
+     * @return string date
+     */
     public static String dateToString(Date date){
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         return df.format(date);
     }
 
+    /**
+     * File chooser for import of CSV
+     * @return csv file
+     */
     public static File chooseFile() {
         final FileChooser fileChooser = new FileChooser();
         file = fileChooser.showOpenDialog(null);
@@ -299,6 +429,12 @@ public class Util {
         }
     }
 
+    /**
+     * Rounds decimal number
+     * @param value
+     * @param places
+     * @return
+     */
     public static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
         BigDecimal bd = BigDecimal.valueOf(value);
@@ -306,9 +442,38 @@ public class Util {
         return bd.doubleValue();
     }
 
+    /**
+     * Parses date to specified format
+     * @param dateString string date
+     * @return new date format
+     * @throws ParseException
+     */
     public static String parseDateToFormat(String dateString) throws ParseException {
         DateFormat parseFormat = new SimpleDateFormat("dd.MM.yy");
         DateFormat formattingFormat = new SimpleDateFormat("dd.MM.yyyy");
         return formattingFormat.format(parseFormat.parse(dateString));
+    }
+
+    /**
+     * Makes window draggable
+     * @param pane
+     */
+    public static void draggable(Pane pane) {
+        pane.setOnMousePressed(event -> {
+            xOffset = pane.getScene().getWindow().getX() - event.getScreenX();
+            yOffset = pane.getScene().getWindow().getY() - event.getScreenY();
+        });
+        pane.setOnMouseDragged(event -> {
+            pane.getScene().getWindow().setX(event.getScreenX() + xOffset);
+            pane.getScene().getWindow().setY(event.getScreenY() + yOffset);
+        });
+    }
+
+    /**
+     * Getter for file
+     * @return selected file
+     */
+    public static File getFile() {
+        return file;
     }
 }

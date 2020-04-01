@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPaneDashboard" maxWidth="1036.0" prefHeight="672.0" prefWidth="1036.0" stylesheets="@../css/custom_theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashboardController">
+<BorderPane fx:id="borderPaneDashboard" maxWidth="1036.0" prefHeight="672.0" prefWidth="1036.0" stylesheets="@../css/custom_theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashboardScreenController">
     <left>
         <HBox BorderPane.alignment="CENTER">
             <children>
@@ -42,7 +42,7 @@
                         <FontAwesomeIconView fill="WHITE" glyphName="CREDIT_CARD" size="2.5em" />
                      </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="buttonAccount" onAction="#openDashboardAccountScreen" prefHeight="73.0" prefWidth="225.0" style="-fx-background-radius: 0; -fx-background-color: #000000; -fx-border-radius: 0; -fx-border-color: white black white black;" text="Account" textFill="WHITE" VBox.vgrow="ALWAYS">
+                        <JFXButton fx:id="buttonAccount" onAction="#openAccountScreen" prefHeight="73.0" prefWidth="225.0" style="-fx-background-radius: 0; -fx-background-color: #000000; -fx-border-radius: 0; -fx-border-color: white black white black;" text="Account" textFill="WHITE" VBox.vgrow="ALWAYS">
                             <font>
                                 <Font name="System Bold" size="14.0" />
                             </font>

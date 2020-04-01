@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Account entity class which represents a user account
+ */
 @Entity
 @Table(name = "account")
 public class Account implements Serializable {

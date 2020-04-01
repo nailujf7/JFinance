@@ -17,12 +17,14 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
+/**
+ * Controller class for LedgerInputScreen
+ */
 public class LedgerInputScreenController implements Initializable {
 
     public static boolean isEntryDetail = false;
     public TextField textfieldLedgerName;
     public DatePicker textFieldLedgerCreationDate;
-    public Button buttonBack;
     public Button buttonSaveLedger;
     public TextArea textAreaDescription;
     public AnchorPane anchorPaneLedgerInput;
@@ -37,8 +39,11 @@ public class LedgerInputScreenController implements Initializable {
         }
     }
 
+    /**
+     * Shows ledger entry details
+     */
     private void showLedgerEntryDetails() {
-        Ledger ledger = database.getCurrentLedger();
+        Ledger ledger = database.getSelectedLedger();
         if (ledger != null) {
             textfieldLedgerName.setText(ledger.getLedgerName());
             textAreaDescription.setText(ledger.getDescription());
@@ -46,6 +51,10 @@ public class LedgerInputScreenController implements Initializable {
         }
     }
 
+    /**
+     * Save or update ledger entry
+     * @param event
+     */
     public void saveUpdateLedgerEntry(ActionEvent event) {
         if (textFieldLedgerCreationDate.getValue() != null) {
             if (database.getLedger() == null) {
@@ -59,35 +68,43 @@ public class LedgerInputScreenController implements Initializable {
             Util.refreshLedgerData();
             windowClose(event);
         } else {
-            Util.wrongWarningAlert("Please select a date for your payment!");
+            Util.warningAlert("Please select a date for your payment!");
         }
     }
 
+    /**
+     * Delete ledger entry
+     * @param event
+     * @throws IOException
+     */
     public void deleteLedgerEntry(ActionEvent event) throws IOException {
         LedgerOverviewScreenController los = Util.fxmlLoaderLOS.getController();
         if (Util.confirmationAlert("Do you really want to delete this entry?")) {
             database.deleteLedgerEntry(los.tableViewLedger.getSelectionModel().getSelectedItem());
             if (LedgerInputScreenController.isEntryDetail) {
-                closeInputScreen(event);
-                los.loadLedgerData();
                 Util.refreshLedgerMenu();
+                Util.refreshLedgerData();
+                windowClose(event);
             } else {
                 Util.showDashboardScreen(event);
             }
         }
     }
 
-    public void closeInputScreen(ActionEvent event) {
-        windowClose(event);
-        LedgerInputScreenController.isEntryDetail = false;
-        PaymentInputScreenController.isEntryDetail = false;
-    }
-
+    /**
+     * Minimizes window
+     * @param event
+     */
     public void windowMinimize(Event event) {
         Util.windowMinimize(event);
     }
 
+    /**
+     * Closes window
+     * @param event
+     */
     public void windowClose(Event event) {
+        LedgerInputScreenController.isEntryDetail = false;
         Util.windowClose(event);
     }
 }

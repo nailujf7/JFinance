@@ -15,6 +15,9 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for SplashScreen
+ */
 public class SplashScreenController implements Initializable {
     public AnchorPane root;
     public ImageView imageViewSplash;
@@ -31,7 +34,11 @@ public class SplashScreenController implements Initializable {
 
     }
 
-    public void loadSplashScreen() throws IOException {
+    /**
+     * Loads splash screen with fade to login screen
+     * @throws IOException
+     */
+    private void loadSplashScreen() throws IOException {
         Main.isSplashLoaded = true;
         //Load splash screen view FXML
         AnchorPane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource((Constants.SPLASH_SCREEN))));
@@ -39,13 +46,13 @@ public class SplashScreenController implements Initializable {
         root.getChildren().setAll(pane);
 
         //Load splash screen with fade in effect
-        FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), pane);
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.75), pane);
         fadeIn.setFromValue(0);
         fadeIn.setToValue(1);
         fadeIn.setCycleCount(1);
 
         //Finish splash with fade out effect
-        FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.5), pane);
+        FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.75), pane);
         fadeOut.setFromValue(1);
         fadeOut.setToValue(0);
         fadeOut.setCycleCount(1);

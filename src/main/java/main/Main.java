@@ -13,10 +13,16 @@ import util.Util;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 
-
+/**
+ * Main class
+ */
 public class Main extends Application {
     public static boolean isSplashLoaded = false;
 
+    /**
+     * Retrieves database data with hibernate and launches application
+     * @param args
+     */
     public static void main(final String[] args) {
         final Session session = HibernateUtil.openCurrentSession();
         try {

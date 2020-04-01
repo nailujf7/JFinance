@@ -6,6 +6,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * Payment entity class that represents the payments within a ledger
+ */
 @Entity
 @Table(name = "payment")
 public class Payment implements Serializable {

@@ -18,8 +18,11 @@ import org.hibernate.cfg.Environment;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Util class to manage Hibernate
+ */
 public class HibernateUtil {
-    public static final Logger logger = LogManager.getLogger(HibernateUtil.class);
+    private static final Logger logger = LogManager.getLogger(HibernateUtil.class);
     private static SessionFactory sessionFactory = buildSessionFactory();
     private static Session currentSession;
     private static Transaction currentTransaction;
@@ -77,34 +80,59 @@ public class HibernateUtil {
         return sessionFactory;
     }
 
+    /**
+     * Opens session
+     * @return
+     */
     public static Session openCurrentSession() {
         currentSession = getSessionFactory().openSession();
         return currentSession;
     }
 
-    public static Session openCurrentSessionwithTransaction() {
+    /**
+     * Open session with transaction
+     * @return
+     */
+    public static Session openCurrentSessionWithTransaction() {
         currentSession = getSessionFactory().openSession();
         currentTransaction = currentSession.beginTransaction();
         return currentSession;
     }
 
+    /**
+     * Closes current session
+     */
     public static void closeCurrentSession() {
         currentSession.close();
     }
 
-    public static void closeCurrentSessionwithTransaction() {
+    /**
+     * Closes current session with transaction
+     */
+    public static void closeCurrentSessionWithTransaction() {
         currentTransaction.commit();
         currentSession.close();
     }
 
+    /**
+     * Getter for current session
+     * @return current session
+     */
     public static Session getCurrentSession() {
         return currentSession;
     }
 
+    /**
+     * Getter for current transaction
+     * @return current transaction
+     */
     public static Transaction getCurrentTransaction() {
         return currentTransaction;
     }
 
+    /**
+     * Shutdown of registry builder for logger
+     */
     public static void shutdown() {
         if (registry != null) {
             StandardServiceRegistryBuilder.destroy(registry);

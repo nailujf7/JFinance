@@ -14,10 +14,16 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+/**
+ * PDFCreator class to export ledger and payment data
+ */
 public class PDFCreator {
     private static List<Payment> payments;
     private static Database database = Database.getDatabase();
 
+    /**
+     * Creates PDF file
+     */
     public static void createPDF() {
         Document document = new Document();
         try {

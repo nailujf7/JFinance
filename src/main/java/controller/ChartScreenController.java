@@ -20,19 +20,21 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Controller class for ChartScreen
+ */
 public class ChartScreenController implements Initializable {
     public PieChart pieChart;
-    public Label labelTotalBalance;
     public BarChart<String, Number> barChart;
     public LineChart<Number, Number> lineChart;
     public Tooltip toolTipPayments;
+    public Label labelTotalBalance;
     public TextArea notesAreaTextField;
-    private PieChart chart;
-    private List<Payment> payments;
-    private List<Ledger> ledgers;
-    private XYChart.Series<String, Number> dataSeries1;
+    private XYChart.Series<String, Number> seriesBarChart;
     private XYChart.Data<String, Number> barChartData;
     private XYChart.Series<Number, Number> seriesLineChart;
+    private List<Payment> payments;
+    private List<Ledger> ledgers;
     private Database database = Database.getDatabase();
 
     @Override
@@ -44,6 +46,9 @@ public class ChartScreenController implements Initializable {
         notesAreaTextField.setText(database.getNotes());
     }
 
+    /**
+     * Create line charts and add data to it
+     */
     public void createLineChart() {
         seriesLineChart = new XYChart.Series<>();
         if (Util.getSelectedLedgerName().equals("ALL")) {
@@ -59,38 +64,45 @@ public class ChartScreenController implements Initializable {
         lineChartToolTip();
     }
 
-    public void createBarChart() {
-        dataSeries1 = new XYChart.Series<>();
+    /**
+     * Create bar chart and add data to it
+     */
+    private void createBarChart() {
+        seriesBarChart = new XYChart.Series<>();
         for (Ledger ledger : ledgers) {
             if (ledger != null) {
                 database.setLedger(ledger);
                 barChartData = new XYChart.Data<>(ledger.getLedgerName(), database.getSumAmount());
-                dataSeries1.getData().add(barChartData);
+                seriesBarChart.getData().add(barChartData);
             }
         }
-        barChart.getData().addAll(dataSeries1);
+        barChart.getData().addAll(seriesBarChart);
         barChartToolTip();
     }
 
-    public void createPieChart() {
+    /**
+     * Create pie chart and add data to it
+     */
+    private void createPieChart() {
         ledgers = database.getLedgerList();
         ObservableList<PieChart.Data> pieChartData =
                 FXCollections.observableArrayList();
         int i = 0;
         for (Ledger ledger : ledgers) {
-            List<Double> list = database.getLedgerSumAmount();
+            List<Double> list = database.getLedgerTotalBalance();
             if (i < list.size()) {
-                double sum = database.getLedgerSumAmount().get(i++);
+                double sum = database.getLedgerTotalBalance().get(i++);
                 pieChartData.add(new PieChart.Data(ledger.getLedgerName(), sum));
             }
         }
-        chart = new PieChart(pieChartData);
-
         pieChart.getData().addAll(pieChartData);
         pieChartToolTip();
     }
 
-    public void lineChartToolTip() {
+    /**
+     * Set tool tip to line chart nodes
+     */
+    private void lineChartToolTip() {
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         for (XYChart.Series<Number, Number> s : lineChart.getData()) {
             for (XYChart.Data<Number, Number> d : s.getData()) {
@@ -115,15 +127,18 @@ public class ChartScreenController implements Initializable {
 
     }
 
-    public void barChartToolTip() {
+    /**
+     * Set tool tip to bar chart nodes
+     */
+    private void barChartToolTip() {
         ObservableList<XYChart.Data<String, Number>> observableData = FXCollections.observableArrayList();
         observableData.add(barChartData);
-        dataSeries1.setData(barChart.getData().get(0).getData());
+        seriesBarChart.setData(barChart.getData().get(0).getData());
         int i = 0;
         for (XYChart.Series<String, Number> s : barChart.getData()) {
             for (XYChart.Data<String, Number> d : s.getData()) {
                 Tooltip tooltip = new Tooltip();
-                List ledgers = database.getLedgerSumAmount();
+                List ledgers = database.getLedgerTotalBalance();
                 if (i != ledgers.size()) {
                     tooltip.setText((ledgers.get(i++) + " €"));
                     Tooltip.install(d.getNode(), tooltip);
@@ -135,8 +150,11 @@ public class ChartScreenController implements Initializable {
         }
     }
 
-    public void pieChartToolTip() {
-        chart.getData().stream().forEach(data -> {
+    /**
+     * Set tool tip to pie chart nodes
+     */
+    private void pieChartToolTip() {
+        pieChart.getData().stream().forEach(data -> {
             Tooltip tooltip = new Tooltip();
             tooltip.setText(data.getPieValue() + "€");
             Tooltip.install(data.getNode(), tooltip);
@@ -145,10 +163,17 @@ public class ChartScreenController implements Initializable {
         });
     }
 
+    /**
+     * Save notes of chart screen
+     */
     public void saveNotes() {
         database.saveNotes(notesAreaTextField.getText());
     }
 
+    /**
+     * Getter for line chart series
+     * @return XYChart series data
+     */
     public XYChart.Series<Number, Number> getSeriesLineChart() {
         return seriesLineChart;
     }

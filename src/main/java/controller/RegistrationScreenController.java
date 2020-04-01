@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for RegistrationScreen
+ */
 public class RegistrationScreenController implements Initializable {
 
     public TextField firstnameTextField;
@@ -31,6 +34,11 @@ public class RegistrationScreenController implements Initializable {
         imageViewProfile.setImage(new Image(Constants.IMAGE_PROFILE));
     }
 
+    /**
+     * Creates a new account
+     * @param event
+     * @throws IOException
+     */
     public void createAccount(ActionEvent event) throws IOException {
         if (!(firstnameTextField.getText().equals("") || lastameTextField.getText().equals("") || dateOfBirth.getValue() == null || usernameTextField.getText().equals("") ||
                 passwordTextField.getText().equals(""))) {
@@ -40,21 +48,34 @@ public class RegistrationScreenController implements Initializable {
                         usernameTextField.getText(), passwordTextField.getText());
                 Util.showLoginScreen(event);
             } else {
-                Util.wrongWarningAlert("Username already exists, please choose another one!");
+                Util.warningAlert("Username already exists, please choose another one!");
             }
         } else {
-            Util.wrongWarningAlert("Please fill out all fields!");
+            Util.warningAlert("Please fill out all fields!");
         }
     }
 
+    /**
+     * Shows login screen
+     * @param event
+     * @throws IOException
+     */
     public void showLoginScreen(ActionEvent event) throws IOException {
         Util.showLoginScreen(event);
     }
 
+    /**
+     * Minimizes window
+     * @param event
+     */
     public void windowMinimize(Event event) {
         Util.windowMinimize(event);
     }
 
+    /**
+     * Closes window
+     * @param event
+     */
     public void windowClose(Event event) {
         Util.windowClose(event);
     }

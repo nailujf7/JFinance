@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for LoginScreen
+ */
 public class LoginScreenController implements Initializable {
 
     public TextField textFieldUsername;
@@ -32,27 +35,48 @@ public class LoginScreenController implements Initializable {
         setDefaultData();
     }
 
-    public void checkLoginData(Event event) throws IOException {
+    /**
+     * Checks account credentials and signs in if credentials are correct
+     * @param event
+     * @throws IOException
+     */
+    public void signIn(Event event) throws IOException {
         if (database.authenticate(textFieldUsername.getText(), textFieldPassword.getText())) {
             saveData();
             Util.showDashboardScreen(event);
         } else {
-            Util.wrongWarningAlert("Wrong credentials, try again!");
+            Util.warningAlert("Wrong credentials, try again!");
         }
     }
 
+    /**
+     * Shows registration screen
+     * @param event
+     * @throws IOException
+     */
     public void showRegistrationScreen(ActionEvent event) throws IOException {
         Util.showRegistrationScreen(event);
     }
 
+    /**
+     * Minimizes window
+     * @param event
+     */
     public void windowMinimize(Event event) {
         Util.windowMinimize(event);
     }
 
+    /**
+     * Closes window
+     * @param event
+     */
     public void windowClose(Event event) {
         Util.windowClose(event);
     }
 
+    /**
+     * Saves account credentials if user wants the credentials to be remembered
+     */
     public void saveData() {
         if (checkBoxRemeberMe.isSelected()) {
             ConfigData.setPrefData("data", "saved");
@@ -61,6 +85,9 @@ public class LoginScreenController implements Initializable {
         }
     }
 
+    /**
+     * Applies remembered account credentials if set
+     */
     public void setDefaultData() {
         if (ConfigData.userDataExist()) {
             textFieldUsername.setText(ConfigData.loadPrefData("username", ""));
@@ -69,9 +96,14 @@ public class LoginScreenController implements Initializable {
         }
     }
 
+    /**
+     * Login in if enter button is pressed
+     * @param keyEvent
+     * @throws IOException
+     */
     public void enterButton(KeyEvent keyEvent) throws IOException {
         if (keyEvent.getCode().toString().equals("ENTER")) {
-            checkLoginData(keyEvent);
+            signIn(keyEvent);
         }
     }
 }

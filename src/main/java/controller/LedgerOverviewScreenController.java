@@ -27,14 +27,16 @@ public class LedgerOverviewScreenController implements Initializable {
     public JFXButton buttonDeleteLedger;
     public JFXButton buttonSelect;
     private Database database = Database.getDatabase();
-    private Ledger ledger;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadLedgerData();
+        populateLedgerTable();
     }
 
-    public void loadLedgerData() {
+    /**
+     * Populates ledger table with data
+     */
+    public void populateLedgerTable() {
         ObservableList<Ledger> ledgers = FXCollections.observableArrayList();
         List eList = database.getLedgerList();
         if (eList != (null)) {
@@ -46,43 +48,44 @@ public class LedgerOverviewScreenController implements Initializable {
         tableViewLedger.setItems(ledgers);
     }
 
-    private void showSelectedLedger() {
-        LedgerInputScreenController.isEntryDetail = true;
-        database.setLedger((tableViewLedger.getSelectionModel().getSelectedItem()));
-    }
-
+    /**
+     * Shows ledger details
+     * @throws IOException
+     */
     public void showLedgerDetails() throws IOException {
-        if (tableViewLedger.getSelectionModel().getSelectedItem() != null) {
-            showSelectedLedger();
+        Ledger ledger = tableViewLedger.getSelectionModel().getSelectedItem();
+        if (ledger != null) {
+            LedgerInputScreenController.isEntryDetail = true;
+            database.setLedger(ledger);
             Util.showLedgerInputScreen();
         } else {
-            Util.wrongWarningAlert("Please select a ledger entry!");
+            Util.warningAlert("Please select a ledger entry!");
         }
     }
 
+    /**
+     * Deletes ledger entry
+     */
     public void deleteLedgerEntry() {
-        if (tableViewLedger.getSelectionModel().getSelectedItem() != null) {
+        Ledger ledger = tableViewLedger.getSelectionModel().getSelectedItem();
+        if (ledger != null) {
             if (Util.confirmationAlert("Do you really want to delete this ledger entry?")) {
-                database.deleteLedgerEntry(tableViewLedger.getSelectionModel().getSelectedItem());
-                loadLedgerData();
+                database.deleteLedgerEntry(ledger);
+                populateLedgerTable();
                 Util.refreshLedgerMenu();
             }
         } else {
-            Util.wrongWarningAlert("No ledger entry selected!");
+            Util.warningAlert("No ledger entry selected!");
         }
     }
 
+    /**
+     * Opens ledger input screen to add a new entry
+     * @throws IOException
+     */
     public void addLedger() throws IOException {
         database.setLedger(null);
         Util.showLedgerInputScreen();
-    }
-
-    public Ledger getLedger() {
-        return ledger;
-    }
-
-    public void setLedger(Ledger ledger) {
-        this.ledger = ledger;
     }
 
 }
