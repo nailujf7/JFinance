@@ -38,10 +38,11 @@ public class Constants {
 
     /**
      * Constants for mysql database queries
+     * Reminder: If I only want to retrieve specific columns, I am not allowed to set an entity type to the native query.
      */
-    public static final String SQL_AUTHENTICATE = "SELECT * FROM jfinance.account  AS acc WHERE acc.username = :username and acc.password = :password";
+    public static final String SQL_AUTHENTICATE = "SELECT * FROM jfinance.account AS acc WHERE acc.username = :username and acc.password = :password ";
     public static final String SQL_LEDGER_SUM_AMOUNT = "SELECT pay.total FROM jfinance.ledger INNER JOIN (SELECT jfinance.payment.ledger_id,SUM(amount) AS total FROM jfinance.payment group by jfinance.payment.ledger_id) AS pay WHERE jfinance.ledger.ledger_id = pay.ledger_id and jfinance.ledger.account_id= :account_ID";
-    public static final String SQL_ACCOUNT_PAYMENTS = "SELECT * FROM jfinance.ledger JOIN jfinance.payment WHERE ledger.ledger_id = payment.ledger_id and ledger.account_id = :account_ID";
+    public static final String SQL_ACCOUNT_PAYMENTS = "SELECT *, jfinance.payment.date FROM jfinance.ledger JOIN jfinance.payment WHERE ledger.ledger_id = payment.ledger_id and ledger.account_id = :account_ID";
     public static final String SQL_LEDGER_LIST = "SELECT * FROM jfinance.account AS ac RIGHT JOIN jfinance.ledger bk ON ac.account_id = bk.account_id WHERE bk.account_id= :account_ID";
     public static final String SQL_PAYMENT_LIST = "SELECT * FROM jfinance.payment AS p RIGHT OUTER JOIN jfinance.ledger b ON p.ledger_id=b.ledger_id WHERE b.ledger_id = :ledger_ID";
     public static final String SQL_SUM_AMOUNT_ALL = "SELECT sum(amount) FROM jfinance.ledger JOIN jfinance.payment WHERE ledger.ledger_id = payment.ledger_id and  ledger.account_id = :account_ID";

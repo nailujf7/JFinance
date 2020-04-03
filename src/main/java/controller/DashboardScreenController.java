@@ -1,5 +1,6 @@
 package controller;
 
+import database.MySQLDatabase;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
@@ -8,11 +9,11 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import model.Ledger;
 import util.ConfigData;
 import util.Constants;
-import database.MySQLDatabase;
 import util.Util;
 
 import java.io.IOException;
@@ -76,15 +77,15 @@ public class DashboardScreenController implements Initializable {
     /**
      * Initializes the menu items with names of existing ledgers
      */
-    private void initializeMenuItems(){
+    private void initializeMenuItems() {
         for (MenuItem menuItem : menuLedgers.getItems()) {
             menuItem.setOnAction(e -> {
-                for (int i = 0; i < ledgerList.size(); i++) {
-                    if (ledgerList.get(i).getLedgerName().equals(menuItem.getText())) {
+                for (Ledger ledger : ledgerList) {
+                    if (ledger.getLedgerName().equals(menuItem.getText())) {
                         if (!menuItem.getText().equals("ALL")) {
-                            mySQLDatabase.setLedger(ledgerList.get(i));
+                            mySQLDatabase.setLedger(ledger);
                         } else {
-                            mySQLDatabase.setLedger(ledgerList.get(i));
+                            mySQLDatabase.setLedger(ledger);
                         }
                         menuLedgers.setText(menuItem.getText());
                     }
@@ -112,7 +113,6 @@ public class DashboardScreenController implements Initializable {
             if (object instanceof ChartScreenController) {
                 ChartScreenController cs = (ChartScreenController) object;
                 if (cs.getSeriesLineChart() != null) {
-                    cs.getSeriesLineChart().getData().clear();
                     cs.createLineChart();
                 }
             }
@@ -123,6 +123,7 @@ public class DashboardScreenController implements Initializable {
 
     /**
      * Opens ledger overview screen
+     *
      * @throws IOException
      */
     public void openLedgerOverviewScreen() throws IOException {
@@ -132,6 +133,7 @@ public class DashboardScreenController implements Initializable {
 
     /**
      * Opens payment overview screen
+     *
      * @throws IOException
      */
     public void openPaymentOverviewScreen() throws IOException {
@@ -141,6 +143,7 @@ public class DashboardScreenController implements Initializable {
 
     /**
      * Opens chart overview screen
+     *
      * @throws IOException
      */
     public void openChartOverviewScreen() throws IOException {
@@ -150,6 +153,7 @@ public class DashboardScreenController implements Initializable {
 
     /**
      * Opens account screen
+     *
      * @throws IOException
      */
     public void openAccountScreen() throws IOException {
@@ -159,6 +163,7 @@ public class DashboardScreenController implements Initializable {
 
     /**
      * Getter for UI label
+     *
      * @return label
      */
     public Label getLabelUser() {
@@ -167,6 +172,7 @@ public class DashboardScreenController implements Initializable {
 
     /**
      * Signs out from account
+     *
      * @param event
      * @throws IOException
      */
@@ -176,6 +182,7 @@ public class DashboardScreenController implements Initializable {
 
     /**
      * Getter for UI menu button
+     *
      * @return
      */
     public MenuButton getMenuLedgers() {
@@ -184,6 +191,7 @@ public class DashboardScreenController implements Initializable {
 
     /**
      * Minimizes window
+     *
      * @param event
      */
     public void windowMinimize(Event event) {
@@ -192,11 +200,19 @@ public class DashboardScreenController implements Initializable {
 
     /**
      * Closes window
+     *
      * @param event
      */
     public void windowClose(Event event) {
         Util.windowClose(event);
     }
 
-
+    /**
+     * Maximizes window
+     *
+     * @param mouseEvent
+     */
+    public void windowMaximize(MouseEvent mouseEvent) {
+        Util.windowMaximize(mouseEvent);
+    }
 }

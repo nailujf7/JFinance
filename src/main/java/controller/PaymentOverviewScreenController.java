@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * @author Julian Flieter
  * Controller for PaymentOverviewScreen
  */
 public class PaymentOverviewScreenController implements Initializable {
@@ -42,7 +41,6 @@ public class PaymentOverviewScreenController implements Initializable {
     public JFXButton buttonAdd;
     public JFXButton buttonImport;
     private MySQLDatabase mySQLDatabase = MySQLDatabase.getMySQLDatabase();
-    private ObservableList<Payment> payments;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -53,7 +51,7 @@ public class PaymentOverviewScreenController implements Initializable {
      * Populates payment table with data
      */
     public void populatePaymentTable() {
-        payments = FXCollections.observableArrayList();
+        ObservableList<Payment> payments = FXCollections.observableArrayList();
         disableButtons();
         List <Payment> eList;
         if (Util.isAccountPayments()) {

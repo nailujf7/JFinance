@@ -107,7 +107,7 @@
                                 <Font name="System Bold" size="22.0" />
                             </font>
                             <HBox.margin>
-                                <Insets left="450.0" right="350.0" />
+                                <Insets left="450.0" right="330.0" />
                             </HBox.margin>
                         </Label>
                </children>
@@ -119,6 +119,7 @@
                         <Insets />
                      </HBox.margin>
                   </FontAwesomeIconView>
+                  <FontAwesomeIconView glyphName="WINDOW_MAXIMIZE" onMouseClicked="#windowMaximize" size="2.5em" stroke="WHITE" />
                         <FontAwesomeIconView glyphName="WINDOW_CLOSE" onMouseClicked="#windowClose" size="2.5em" stroke="WHITE" HBox.hgrow="ALWAYS" />
                </children>
                <padding>

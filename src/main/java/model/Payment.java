@@ -1,5 +1,6 @@
 package model;
 
+import org.hibernate.annotations.Type;
 import util.Util;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class Payment implements Serializable {
     @Column(name = "amount")
     private double amount;
     @Column(name = "date")
+    @Type(type="date")
     private Date date;
     @Column(name = "information")
     private String information;

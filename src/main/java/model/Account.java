@@ -1,5 +1,6 @@
 package model;
 
+import org.hibernate.annotations.Type;
 import util.Util;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class Account implements Serializable {
     @Column(name = "lastname")
     private String lastname;
     @Column(name = "date_of_birth")
+    @Type(type="date")
     private Date dateOfBirth;
     @Column(name = "username")
     private String username;
@@ -31,7 +33,7 @@ public class Account implements Serializable {
     private String password;
     @Column(name = "notes")
     private String notes;
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Ledger> ledgerList = new ArrayList<>();
 
     public Account() {

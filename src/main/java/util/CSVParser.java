@@ -35,11 +35,13 @@ public class CSVParser {
         //Read CSV line by line and use the string array as you want
         payments = new ArrayList<>();
         for (String[] row : allRows) {
-            String amount = row[8];
-            String name = row[5];
-            String information = row[4];
-            Date date = new SimpleDateFormat("dd.MM.yyyy").parse(Util.parseDateToFormat((row[2])));
-            payments.add(new Payment(name, Double.valueOf(amount.replace(",", ".")), new java.sql.Date(date.getTime()), information));
+            if (row != null) {
+                String amount = row[8];
+                String name = row[5];
+                String information = row[4];
+                Date date = new SimpleDateFormat("dd.MM.yyyy").parse(Util.parseDateToFormat((row[2])));
+                payments.add(new Payment(name, Double.valueOf(amount.replace(",", ".")), new java.sql.Date(date.getTime()), information));
+            }
         }
         mySQLDatabase.batchPaymentInsert();
 

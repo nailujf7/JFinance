@@ -1,5 +1,6 @@
 package model;
 
+import org.hibernate.annotations.Type;
 import util.Util;
 
 import javax.persistence.*;
@@ -21,22 +22,23 @@ public class Ledger implements Serializable {
     private int ledger_id;
     @Column(name = "ledgerName")
     private String ledgerName;
-    @Column(name = "date")
-    private Date date;
+    @Column(name = "creation_date")
+    @Type(type="date")
+    private Date creationDate;
     @Column(name = "description")
     private String description;
     @ManyToOne()
     @JoinColumn(name = "account_id")
     private Account account;
-    @OneToMany(mappedBy = "ledger", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "ledger", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Payment> paymentList = new ArrayList<>();
 
     public Ledger() {
     }
 
-    public Ledger(String ledgerName, Date date, String description) {
+    public Ledger(String ledgerName, Date creationDate, String description) {
         this.ledgerName = ledgerName;
-        this.date = date;
+        this.creationDate = creationDate;
         this.description = description;
     }
 
@@ -72,12 +74,12 @@ public class Ledger implements Serializable {
         this.account = account;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getCreationDate() {
+        return creationDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
     public String getDescription() {
@@ -90,7 +92,7 @@ public class Ledger implements Serializable {
 
     @Override
     public String toString() {
-        return "Ledger [ledger_id=" + ledger_id + ", date=" + Util.dateToString(date) + ", name="
+        return "Ledger [ledger_id=" + ledger_id + ", creationDate=" + Util.dateToString(creationDate) + ", name="
                 + ledgerName + ", description=" + description + "]";
     }
 }

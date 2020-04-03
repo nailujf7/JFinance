@@ -7,7 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import model.Ledger;
 import database.MySQLDatabase;
 import util.Util;
@@ -47,7 +46,7 @@ public class LedgerInputScreenController implements Initializable {
         if (ledger != null) {
             textfieldLedgerName.setText(ledger.getLedgerName());
             textAreaDescription.setText(ledger.getDescription());
-            textFieldLedgerCreationDate.setValue(Util.convertToLocalDateViaUtilDate(ledger.getDate()));
+            textFieldLedgerCreationDate.setValue(Util.convertToLocalDateViaUtilDate(ledger.getCreationDate()));
         }
     }
 

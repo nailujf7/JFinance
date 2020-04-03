@@ -3,6 +3,7 @@ package database;
 import model.Account;
 import model.Ledger;
 import model.Payment;
+import org.hibernate.jpa.QueryHints;
 import org.hibernate.query.Query;
 import util.CSVParser;
 import util.Constants;
@@ -25,10 +26,10 @@ public class MySQLDatabase {
      * Checks user data when logging in
      * @param username login screen username
      * @param password login screen password
-     * @return true/false if user data was valid
+     * @return true/false if user credentials are valid
      */
     public boolean authenticate(String username, String password) {
-        Query q = HibernateUtil.openCurrentSession().createNativeQuery(Constants.SQL_AUTHENTICATE, Account.class);
+        Query q = HibernateUtil.openCurrentSession().createNativeQuery(Constants.SQL_AUTHENTICATE, Account.class).setHint(QueryHints.HINT_READONLY, true);
         q.setParameter("username", username);
         q.setParameter("password", password);
         account = (Account) q.uniqueResult();
@@ -42,7 +43,7 @@ public class MySQLDatabase {
      */
     public List<Double> getLedgerTotalBalance() {
         if (ledger != null) {
-            Query q = HibernateUtil.openCurrentSession().createNativeQuery(Constants.SQL_LEDGER_SUM_AMOUNT);
+            Query q = HibernateUtil.openCurrentSession().createNativeQuery(Constants.SQL_LEDGER_SUM_AMOUNT).setHint(QueryHints.HINT_READONLY, true);
             q.setParameter("account_ID", account.getAccount_id());
             List<Double> list = q.list();
             HibernateUtil.closeCurrentSession();
@@ -58,7 +59,7 @@ public class MySQLDatabase {
      */
     public List<Payment> getAccountPayments() {
         if (account != null) {
-            Query q = HibernateUtil.openCurrentSession().createNativeQuery(Constants.SQL_ACCOUNT_PAYMENTS, Payment.class);
+            Query q = HibernateUtil.openCurrentSession().createNativeQuery(Constants.SQL_ACCOUNT_PAYMENTS, Payment.class).setHint(QueryHints.HINT_READONLY, true);
             q.setParameter("account_ID", account.getAccount_id());
             List list = q.list();
             account.setLedgerList(list);
@@ -75,7 +76,7 @@ public class MySQLDatabase {
      */
     public List<Ledger> getLedgerList() {
         if (account != null) {
-            Query q = HibernateUtil.openCurrentSession().createNativeQuery(Constants.SQL_LEDGER_LIST, Ledger.class);
+            Query q = HibernateUtil.openCurrentSession().createNativeQuery(Constants.SQL_LEDGER_LIST, Ledger.class).setHint(QueryHints.HINT_READONLY, true);
             q.setParameter("account_ID", account.getAccount_id());
             List<Ledger> list = q.list();
             account.setLedgerList(list);
@@ -92,7 +93,7 @@ public class MySQLDatabase {
      */
     public List<Payment> getPaymentList() {
         if (ledger != null) {
-            Query q = HibernateUtil.openCurrentSession().createNativeQuery(Constants.SQL_PAYMENT_LIST, Payment.class);
+            Query q = HibernateUtil.openCurrentSession().createNativeQuery(Constants.SQL_PAYMENT_LIST, Payment.class).setHint(QueryHints.HINT_READONLY, true);
             q.setParameter("ledger_ID", ledger.getLedger_id());
             List<Payment> list = q.list();
             ledger.setPaymentList(list);
@@ -108,7 +109,7 @@ public class MySQLDatabase {
      * @return total balance
      */
     public double getSumAmountAll() {
-        Query q = HibernateUtil.openCurrentSession().createNativeQuery(Constants.SQL_SUM_AMOUNT_ALL);
+        Query q = HibernateUtil.openCurrentSession().createNativeQuery(Constants.SQL_SUM_AMOUNT_ALL).setHint(QueryHints.HINT_READONLY, true);
         q.setParameter("account_ID", +account.getAccount_id());
         Object sumAmount = q.uniqueResult();
         HibernateUtil.closeCurrentSession();
@@ -120,7 +121,7 @@ public class MySQLDatabase {
      * @return total balance
      */
     public double getSumAmount() {
-        Query q = HibernateUtil.openCurrentSession().createNativeQuery(Constants.SQL_SUM_AMOUNT);
+        Query q = HibernateUtil.openCurrentSession().createNativeQuery(Constants.SQL_SUM_AMOUNT).setHint(QueryHints.HINT_READONLY, true);
         q.setParameter("ledger_ID", +ledger.getLedger_id());
         Object sumAmount = q.uniqueResult();
         HibernateUtil.closeCurrentSession();
@@ -181,7 +182,7 @@ public class MySQLDatabase {
      * @return
      */
     public boolean usernameExists(String username) {
-        Query q = HibernateUtil.openCurrentSession().createNativeQuery(Constants.SQL_USERNAME_EXIST);
+        Query q = HibernateUtil.openCurrentSession().createNativeQuery(Constants.SQL_USERNAME_EXIST).setHint(QueryHints.HINT_READONLY, true);
         q.setParameter("username", username);
         List list = q.list();
         HibernateUtil.closeCurrentSession();
@@ -212,7 +213,7 @@ public class MySQLDatabase {
         HibernateUtil.openCurrentSessionWithTransaction();
         mySQLDatabase.getLedger().setLedgerName(ledgerName);
         mySQLDatabase.getLedger().setDescription(description);
-        mySQLDatabase.getLedger().setDate(date);
+        mySQLDatabase.getLedger().setCreationDate(date);
         HibernateUtil.getCurrentSession().update(ledger);
         HibernateUtil.closeCurrentSessionWithTransaction();
     }

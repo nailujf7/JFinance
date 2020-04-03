@@ -1,5 +1,8 @@
 package util;
 
+import controller.DashboardScreenController;
+import controller.LedgerOverviewScreenController;
+import controller.PaymentOverviewScreenController;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -15,9 +18,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import controller.DashboardScreenController;
-import controller.LedgerOverviewScreenController;
-import controller.PaymentOverviewScreenController;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,6 +53,7 @@ public class Util {
 
     /**
      * Shows chart screen
+     *
      * @throws IOException
      */
     public static void showChartOverviewScreen() throws IOException {
@@ -63,6 +64,7 @@ public class Util {
 
     /**
      * Shows payment overview screen
+     *
      * @throws IOException
      */
     public static void showPaymentOverviewScreen() throws IOException {
@@ -73,6 +75,7 @@ public class Util {
 
     /**
      * Shows ledger overview screen
+     *
      * @throws IOException
      */
     public static void showLedgerOverviewScreen() throws IOException {
@@ -83,6 +86,7 @@ public class Util {
 
     /**
      * Show account screen
+     *
      * @throws IOException
      */
     public static void showAccountScreen() throws IOException {
@@ -93,6 +97,7 @@ public class Util {
 
     /**
      * Shows payment input screen
+     *
      * @throws IOException
      */
     public static void showPaymentInputScreen() throws IOException {
@@ -102,6 +107,7 @@ public class Util {
 
     /**
      * Shows ledger input screen
+     *
      * @throws IOException
      */
     public static void showLedgerInputScreen() throws IOException {
@@ -111,6 +117,7 @@ public class Util {
 
     /**
      * Loads input screen
+     *
      * @param fxml
      * @throws IOException
      */
@@ -125,6 +132,7 @@ public class Util {
 
     /**
      * Show login screen
+     *
      * @param event
      * @throws IOException
      */
@@ -137,6 +145,7 @@ public class Util {
 
     /**
      * Shows registration screen
+     *
      * @param event
      * @throws IOException
      */
@@ -149,6 +158,7 @@ public class Util {
 
     /**
      * Shows dashboard screen
+     *
      * @param event
      * @throws IOException
      */
@@ -161,6 +171,7 @@ public class Util {
 
     /**
      * Shows splash screen
+     *
      * @param stage
      * @throws IOException
      */
@@ -169,13 +180,13 @@ public class Util {
         parent = fxmlLoaderSPS.load();
         Scene scene = new Scene(parent);
         stage.initStyle(StageStyle.TRANSPARENT);
-        stage.setTitle("J-Finance");
         stage.setScene(scene);
         stage.show();
     }
 
     /**
      * Show new window of different scenes
+     *
      * @param event
      * @param parent
      */
@@ -189,6 +200,7 @@ public class Util {
 
     /**
      * Minimizes window
+     *
      * @param event
      */
     public static void windowMinimize(Event event) {
@@ -198,11 +210,26 @@ public class Util {
 
     /**
      * Closes window
+     *
      * @param event
      */
     public static void windowClose(Event event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
+    }
+
+    /**
+     * Maximizes window
+     *
+     * @param event
+     */
+    public static void windowMaximize(Event event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        if (stage.isMaximized()) {
+            stage.setMaximized(false);
+        } else {
+            stage.setMaximized(true);
+        }
     }
 
     /**
@@ -241,17 +268,14 @@ public class Util {
 
     /**
      * Checks if menu item ALL is selected
+     *
      * @return
      */
     public static boolean isAccountPayments() {
         Object object = fxmlLoaderDS.getController();
         if (object instanceof DashboardScreenController) {
             DashboardScreenController dc = (DashboardScreenController) object;
-            if (dc.getMenuLedgers().getText().equals("ALL")) {
-                return true;
-            } else {
-                return false;
-            }
+            return dc.getMenuLedgers().getText().equals("ALL");
         }
         return false;
 
@@ -259,6 +283,7 @@ public class Util {
 
     /**
      * Confirmation alert
+     *
      * @param alertText confirmation text
      * @return boolean if confirmed or not
      */
@@ -280,6 +305,7 @@ public class Util {
 
     /**
      * Warning alert
+     *
      * @param alertText warning text
      */
     public static void warningAlert(String alertText) {
@@ -292,6 +318,7 @@ public class Util {
 
     /**
      * Sets the alert symbol
+     *
      * @param alert alert symbol
      */
     private static void setAlertSymbol(Alert alert) {
@@ -300,6 +327,7 @@ public class Util {
 
     /**
      * Shows file chooser to change profile picture
+     *
      * @param imageView profile picture
      */
     public static void showFileChooser(ImageView imageView) {
@@ -312,6 +340,7 @@ public class Util {
 
     /**
      * Shows file chooser to save exported PDF file
+     *
      * @return saved file
      */
     public static File showFileChooser() {
@@ -327,6 +356,7 @@ public class Util {
 
     /**
      * Convert local date to sql date
+     *
      * @param date local date
      * @return sql date
      */
@@ -336,6 +366,7 @@ public class Util {
 
     /**
      * Convert util date to local date
+     *
      * @param dateToConvert util date
      * @return local date
      */
@@ -345,6 +376,7 @@ public class Util {
 
     /**
      * Converts selected color of color picker to hex
+     *
      * @param color color of color picker
      * @return hex value of color
      */
@@ -382,6 +414,7 @@ public class Util {
 
     /**
      * Changes theme color and saves it as preference for user
+     *
      * @param color color of color picker
      */
     public static void changeThemeColor(Color color) {
@@ -391,6 +424,7 @@ public class Util {
 
     /**
      * Loads ledger
+     *
      * @throws IOException
      */
     public static void loadLedger() throws IOException {
@@ -400,24 +434,27 @@ public class Util {
 
     /**
      * Getter for name of selected ledger of menu item
+     *
      * @return name of menu item
      */
-    public static String getSelectedLedgerName(){
+    public static String getSelectedLedgerName() {
         return ((DashboardScreenController) fxmlLoaderDS.getController()).getMenuLedgers().getText();
     }
 
     /**
      * Converts date to string
+     *
      * @param date date that will be converted
      * @return string date
      */
-    public static String dateToString(Date date){
+    public static String dateToString(Date date) {
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
         return df.format(date);
     }
 
     /**
      * File chooser for import of CSV
+     *
      * @return csv file
      */
     public static File chooseFile() {
@@ -425,13 +462,14 @@ public class Util {
         file = fileChooser.showOpenDialog(null);
         if (file != null) {
             return file;
-        }else{
+        } else {
             return null;
         }
     }
 
     /**
      * Rounds decimal number
+     *
      * @param value
      * @param places
      * @return
@@ -445,6 +483,7 @@ public class Util {
 
     /**
      * Parses date to specified format
+     *
      * @param dateString string date
      * @return new date format
      * @throws ParseException
@@ -457,6 +496,7 @@ public class Util {
 
     /**
      * Makes window draggable
+     *
      * @param pane
      */
     public static void draggable(Pane pane) {
@@ -472,6 +512,7 @@ public class Util {
 
     /**
      * Getter for file
+     *
      * @return selected file
      */
     public static File getFile() {

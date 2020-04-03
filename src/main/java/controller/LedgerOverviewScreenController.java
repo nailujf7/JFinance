@@ -1,6 +1,7 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
+import database.MySQLDatabase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -9,7 +10,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Ledger;
-import database.MySQLDatabase;
 import util.Util;
 
 import java.io.IOException;
@@ -54,6 +54,7 @@ public class LedgerOverviewScreenController implements Initializable {
 
     /**
      * Shows ledger details
+     *
      * @throws IOException
      */
     public void showLedgerDetails() throws IOException {
@@ -85,6 +86,7 @@ public class LedgerOverviewScreenController implements Initializable {
 
     /**
      * Opens ledger input screen to add a new entry
+     *
      * @throws IOException
      */
     public void addLedger() throws IOException {

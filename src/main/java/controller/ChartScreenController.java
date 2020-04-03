@@ -52,6 +52,7 @@ public class ChartScreenController implements Initializable {
      */
     public void createLineChart() {
         seriesLineChart = new XYChart.Series<>();
+        lineChart.getData().clear();
         if (Util.getSelectedLedgerName().equals("ALL")) {
             payments = mySQLDatabase.getAccountPayments();
         } else {

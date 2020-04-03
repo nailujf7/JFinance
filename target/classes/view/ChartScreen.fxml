@@ -20,12 +20,18 @@
       <HBox prefHeight="175.0" prefWidth="600.0" style="-fx-border-color: transparent white white white;" VBox.vgrow="ALWAYS">
          <children>
             <PieChart fx:id="pieChart" labelLineLength="30.0" labelsVisible="false" style="-fx-border-color: transparent white transparent transparent;" title="Ledgers" HBox.hgrow="ALWAYS" />
-            <BarChart fx:id="barChart" legendVisible="false" title="Ledgers" HBox.hgrow="ALWAYS">
+            <BarChart fx:id="barChart" legendVisible="false" prefWidth="525.0" title="Ledgers" HBox.hgrow="ALWAYS">
               <xAxis>
-                <CategoryAxis side="BOTTOM" />
+                <CategoryAxis label="Ledgers" side="BOTTOM" tickLabelFill="WHITE">
+                     <tickLabelFont>
+                        <Font name="System Bold" size="8.0" />
+                     </tickLabelFont></CategoryAxis>
               </xAxis>
               <yAxis>
-                <NumberAxis side="LEFT" />
+                <NumberAxis label="Total Balance" side="LEFT" tickLabelFill="WHITE">
+                     <tickLabelFont>
+                        <Font name="System Bold" size="8.0" />
+                     </tickLabelFont></NumberAxis>
               </yAxis>
             </BarChart>
          </children>
@@ -44,10 +50,16 @@
             </Label>
             <Label fx:id="labelTotalBalance">
                <font>
-                  <Font size="14.0" />
+                  <Font size="20.0" />
                </font>
+               <HBox.margin>
+                  <Insets right="26.0" />
+               </HBox.margin>
             </Label>
-            <Label fx:id="caption2" alignment="CENTER" />
+            <Label fx:id="caption2" alignment="CENTER">
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
             <Label fx:id="caption21" alignment="CENTER">
                <tooltip>
                   <Tooltip fx:id="toolTipBarChart" text="Empty Tooltip" />
@@ -62,10 +74,16 @@
          <children>
                 <LineChart fx:id="lineChart" alternativeColumnFillVisible="true" horizontalZeroLineVisible="false" legendVisible="false" style="-fx-border-color: transparent white transparent transparent;" title="Payments" verticalZeroLineVisible="false">
                     <xAxis>
-                        <NumberAxis forceZeroInRange="false" label="Payment ID" side="BOTTOM" />
+                        <NumberAxis forceZeroInRange="false" label="Payment ID" side="BOTTOM" tickLabelFill="WHITE">
+                     <tickLabelFont>
+                        <Font name="System Bold" size="8.0" />
+                     </tickLabelFont></NumberAxis>
                     </xAxis>
                     <yAxis>
-                        <NumberAxis forceZeroInRange="false" label="Amount" side="LEFT" />
+                        <NumberAxis forceZeroInRange="false" label="Amount" side="LEFT" tickLabelFill="WHITE">
+                     <tickLabelFont>
+                        <Font name="System Bold" size="8.0" />
+                     </tickLabelFont></NumberAxis>
                     </yAxis>
                 </LineChart>
             <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
