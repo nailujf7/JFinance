@@ -28,35 +28,31 @@ Install Java 8 to run the JFinance desktop application
 SQL host
 
 ```
-Install and configure an SQL host. 
+Install and configure a SQL host. 
 This application used MySQL Workbench's local host to run the database. 
 ```
 
 ### Installing
 
-After installing Java 8 and configuring an SQL Host, simply go to .. and run the .exe or .jar file.
+First it is necessary to install Java 8 and configuring an SQL Host.
 
 Step 1) Creating the database.
 
 ```
-Run the CreateDB.sql file in your sql host.
+Create a new database schema in your MySQL Host with the name jfinance.
 ```
 
 Step 2) Configuring the connection.
 
 ```
-Go to the MainApp.java (in /app/..) and edit line: 50
-
-Keep the first  parameter the same. 
-Change the second parameter to your SQL userName.
-Change the third  parameter to your SQL userPassword.
+Change the username and password to your MySQL credentials.
 ```
 
 
 Step 3) Run the application.
 
 ```
-For getting the user passwords see: /doc/manual.pdf 
+Simply run from the Binaries folder the JFinance.jar.
 ```
 
 

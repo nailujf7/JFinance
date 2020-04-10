@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane stylesheets="@../css/custom_theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LedgerOverviewScreenController">
+<AnchorPane stylesheets="@../css/custom_theme.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LedgerOverviewScreenController">
     <children>
         <VBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -29,7 +29,7 @@
                 </TableView>
                 <HBox alignment="TOP_CENTER" spacing="20.0" VBox.vgrow="NEVER">
                     <children>
-                        <JFXButton fx:id="buttonAddLedger" mnemonicParsing="false" onAction="#addLedger" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #000000; -fx-border-color: #ffffff;" text="Add" textFill="WHITE" HBox.hgrow="ALWAYS">
+                        <JFXButton fx:id="buttonAddLedger" mnemonicParsing="false" onAction="#addLedger" prefHeight="35.0" prefWidth="80.0" text="Add" textFill="WHITE" HBox.hgrow="ALWAYS">
                             <graphic>
                                 <FontAwesomeIconView fill="WHITE" glyphName="PLUS_SQUARE" size="2em" text="" />
                             </graphic>
@@ -37,7 +37,7 @@
                                 <Font name="System Bold" size="12.0" />
                             </font>
                         </JFXButton>
-                        <JFXButton fx:id="buttonDeleteLedger" mnemonicParsing="false" onAction="#deleteLedgerEntry" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #000000; -fx-border-color: #ffffff;" text="Delete" textFill="WHITE" HBox.hgrow="ALWAYS">
+                        <JFXButton fx:id="buttonDeleteLedger" mnemonicParsing="false" onAction="#deleteLedgerEntry" prefHeight="35.0" prefWidth="80.0" text="Delete" textFill="WHITE" HBox.hgrow="ALWAYS">
                             <font>
                                 <Font name="System Bold" size="12.0" />
                             </font>
@@ -45,7 +45,7 @@
                                 <FontAwesomeIconView fill="WHITE" glyphName="MINUS_SQUARE" size="2em" />
                             </graphic>
                         </JFXButton>
-                        <JFXButton fx:id="buttonSelect" mnemonicParsing="false" onAction="#showLedgerDetails" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #000000; -fx-border-color: #ffffff;" text="Details" textFill="WHITE" HBox.hgrow="ALWAYS">
+                        <JFXButton fx:id="buttonSelect" mnemonicParsing="false" onAction="#showLedgerDetails" prefHeight="35.0" prefWidth="80.0" text="Details" textFill="WHITE" HBox.hgrow="ALWAYS">
                             <font>
                                 <Font name="System Bold" size="12.0" />
                             </font>

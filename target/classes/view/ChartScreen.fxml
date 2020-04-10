@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/custom_theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ChartScreenController">
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/custom_theme.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ChartScreenController">
     <children>
       <HBox prefHeight="175.0" prefWidth="600.0" style="-fx-border-color: transparent white white white;" VBox.vgrow="ALWAYS">
          <children>
@@ -98,7 +98,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </TextArea>
-                  <JFXButton fx:id="buttonSaveNote" mnemonicParsing="false" onAction="#saveNotes" prefHeight="35.0" prefWidth="80.0" style="-fx-background-color: #000000; -fx-border-color: #ffffff;" text="Save" textFill="WHITE">
+                  <JFXButton fx:id="buttonSaveNote" mnemonicParsing="false" onAction="#saveNotes" prefHeight="35.0" prefWidth="80.0" text="Save" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="FLOPPY_ALT" size="2em" />
                      </graphic>

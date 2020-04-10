@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPanePaymentInput" prefHeight="550.0" prefWidth="500.0" stylesheets="@../css/custom_theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PaymentInputScreenController">
+<AnchorPane fx:id="anchorPanePaymentInput" prefHeight="550.0" prefWidth="500.0" stylesheets="@../css/custom_theme.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PaymentInputScreenController">
     <children>
         <VBox alignment="CENTER" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <HBox alignment="TOP_RIGHT" prefHeight="80.0" spacing="8.0" style="-fx-background-color: #000000; -fx-border-color: white;">
+                <HBox alignment="TOP_RIGHT" prefHeight="45.0" prefWidth="500.0" spacing="8.0" style="-fx-background-color: #000000; -fx-border-color: white;">
                     <children>
                         <Label text="Payment">
                             <font>

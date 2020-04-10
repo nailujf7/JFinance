@@ -12,7 +12,10 @@ import model.Payment;
 import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -39,9 +42,12 @@ public class PDFCreator {
                 Font boldTitle = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.BOLD);
                 document.open();
 
-                Paragraph accountName = new Paragraph(mySQLDatabase.getAccount().getFirstname() + " " + mySQLDatabase.getAccount().getLastname(), boldFont);
-                accountName.setAlignment(Element.ALIGN_RIGHT);
-                document.add(accountName);
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+                Paragraph info = new Paragraph(mySQLDatabase.getAccount().getFirstname() + " " + mySQLDatabase.getAccount().getLastname() +
+                        "\nLedger: " + mySQLDatabase.getLedger().getLedgerName() +
+                        "\n" + dtf.format(LocalDate.now()), boldFont);
+                info.setAlignment(Element.ALIGN_RIGHT);
+                document.add(info);
 
                 //Title
                 Paragraph paragraph = new Paragraph("J-Finance Account Statements", boldTitle);
