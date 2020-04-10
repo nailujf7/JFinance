@@ -52,7 +52,7 @@ Change the username and password to your MySQL credentials.
 Step 3) Run the application.
 
 ```
-Simply run from the Binaries folder the JFinance.jar.
+Simply run from the JFinance folder the JFinance.jar.
 ```
 
 

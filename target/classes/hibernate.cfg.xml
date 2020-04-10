@@ -36,7 +36,5 @@
         <property name="hibernate.order_updates">true</property>
         <property name="hibernate.jdbc.batch_versioned_data">true</property>
 
-
-        <!-- List of XML mapping files -->
     </session-factory>
 </hibernate-configuration>
