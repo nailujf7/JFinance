@@ -65,6 +65,7 @@ Simply run from the JFinance folder the JFinance.jar.
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [Log4j2](https://logging.apache.org/log4j/) - Logger
 * [Hibernate](https://hibernate.org/) - Database Management
+* [JavaFX](https://openjfx.io/) - GUI
 
 ### Dependencies/ Libraries 
 * [JFoenix](http://www.jfoenix.com/) - For the material design in the application
