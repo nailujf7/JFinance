@@ -9,23 +9,23 @@
 
         <!-- File Appender -->
 <!--        <File name="File" fileName="logs\logs.log">-->
-        <File name="File" fileName="${sys:user.dir}/logs/logs.log">
+<!--        <File name="File" fileName="${sys:user.dir}/logs/logs.log">
             <PatternLayout pattern="%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n" />
-        </File>
+        </File>-->
 
     </Appenders>
     <Loggers>
-        <!-- Log everything in hibernate -->
+<!--        &lt;!&ndash; Log everything in hibernate &ndash;&gt;
         <Logger name="org.hibernate" level="info" additivity="false">
             <AppenderRef ref="Console" />
             <AppenderRef ref="File" />
         </Logger>
 
-        <!-- Log SQL statements -->
+        &lt;!&ndash; Log SQL statements &ndash;&gt;
         <Logger name="org.hibernate.SQL" level="debug" additivity="false">
             <AppenderRef ref="Console" />
             <AppenderRef ref="File" />
-        </Logger>
+        </Logger>-->
 
         <!-- Log JDBC bind parameters -->
 <!--        <Logger name="org.hibernate.type.descriptor.sql" level="trace" additivity="false">-->

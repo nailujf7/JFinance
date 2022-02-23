@@ -29,7 +29,8 @@
                         </goals>
                         <configuration>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>main.Main</mainClass>
                                 </transformer>
                             </transformers>
@@ -48,10 +49,11 @@
             <version>8.0.15</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.webjars/font-awesome -->
         <dependency>
-            <groupId>com.lgou2w</groupId>
-            <artifactId>ldk-fx-fontawesomefx</artifactId>
-            <version>0.1.8</version>
+            <groupId>org.webjars</groupId>
+            <artifactId>font-awesome</artifactId>
+            <version>5.15.4</version>
         </dependency>
 
 
