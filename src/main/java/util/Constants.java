@@ -31,9 +31,9 @@ public class Constants {
     /**
      * Constants for images
      */
-    public static final String IMAGE_JFINANCE = "file:C:\\Users\\julia\\Desktop\\JF\\src\\main\\resources\\images\\JFinance.png";
-    public static final String IMAGE_JFINANCE_PDF = "file:C:\\Users\\julia\\Desktop\\JF\\src\\main\\resources\\images\\JFinance_PDF.png";
-    public static final String IMAGE_PROFILE = "file:C:\\Users\\julia\\Desktop\\JF\\src\\main\\resources\\images\\profile.jpeg";
+    public static final String IMAGE_JFINANCE = "file:"+ System.getProperty("user.dir")+ "\\src\\main\\resources\\images\\JFinance.png";
+    public static final String IMAGE_JFINANCE_PDF = "file:"+ System.getProperty("user.dir")+ "\\src\\main\\resources\\images\\JFinance_PDF.png";
+    public static final String IMAGE_PROFILE = "file:"+ System.getProperty("user.dir")+ "\\src\\main\\resources\\images\\profile.jpeg";
     public static final String IMAGE_ALERT = "images/alert.png";
 
     /**
